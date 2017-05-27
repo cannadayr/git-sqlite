@@ -4,8 +4,11 @@ CREATE TABLE bar (
     time_added timestamp default current_timestamp
 );
 
+-- We are making a baseless assumption
+-- that this pseudo, ad-hoc uuid
+-- won't produce a collision
+-- so we won't need a primary key
 CREATE TABLE baz (
-    id integer primary key,
     "id" char(36) default (
         lower(hex(randomblob(4)))
             || '-'
