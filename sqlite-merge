@@ -1,7 +1,14 @@
 #!/bin/sh
-ancestor="$1"
-local="$2"
-remote="$3"
+
+dumpDb()
+{
+    db="$1"
+    echo ".dump" | sqlite3 "$db"
+}
+
+ancestor="$(dumpDb "$1")"
+local="$(dumpDb "$2")"
+remote="$(dumpDb "$3")"
 marker="$4"
 placeholder="$5"
 
