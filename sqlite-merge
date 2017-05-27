@@ -1,2 +1,14 @@
 #!/bin/sh
+ancestor="$1"
+local="$2"
+remote="$3"
+marker="$4"
+placeholder="$5"
+
+echo "ancestor='$ancestor'"
+echo "local='$local'"
+echo "remote='$remote'"
+echo "marker='$marker'"
+echo "placeholder='$placeholder'"
+
 exit 1;
