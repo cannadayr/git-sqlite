@@ -1,0 +1,6 @@
+[diff "sqlite"]
+    binary = true
+    textconv = "echo .dump | sqlite3"
+[merge "sqlite"]
+    name = sqlite merge
+    command = ./sqlite-merge %O %A %B %L %P
