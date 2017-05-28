@@ -1,0 +1,24 @@
+#!/bin/sh
+trunk="$(dirname "$(readlink -f $0)")"
+
+dumpDb()
+{
+    db="$1"
+    echo ".dump" | sqlite3 "$db"
+}
+
+diffDb()
+{
+    current="$1"
+    checked_in="$2"
+    path="$trunk/modules/sqlite3-3.16.2"
+    $path/sqldiff "$current" "$checked_in"
+}
+
+#TODO is this the right order?
+current="$2"
+checked_in="$1"
+
+echo "$(diffDb "$current" "$checked_in")"
+
+#exit 1;
