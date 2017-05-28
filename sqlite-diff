@@ -63,8 +63,8 @@ diff="$(diffDb "$toDb" "$fromDb")"
 if [ -n "$diff" ]; then
 
     # display a bold diff header
-    printErr "$(tput bold)sqldiff $toDb $fromDb"
-    printErr "index $sha $perm$(tput sgr0)"
+    printErr "$(tput bold)sqldiff $toDb $fromDb$(tput sgr0)"
+    printErr "$(tput bold)index $sha $perm$(tput sgr0)"
     echo "$diff"
 fi
 
