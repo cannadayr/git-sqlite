@@ -64,7 +64,7 @@ if [ -n "$diff" ]; then
 
     # display a bold diff header
     printErr "$(tput bold)sqldiff $toDb $fromDb"
-    printErr "$(tput bold)index $sha $perm"
+    printErr "index $sha $perm$(tput sgr0)"
     echo "$diff"
 fi
 
