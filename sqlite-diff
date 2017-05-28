@@ -3,11 +3,18 @@ trunk="$(dirname "$(readlink -f $0)")"
 
 . $trunk/util.sh
 
-#TODO is this the right order?
-current="$2"
-checked_in="$1"
+# net.db /tmp/UMzSgL_net.db 0cdcb0508857225ac4fe21d1780a25d608755903 100644 net.db 0000000000000000000000000000000000000000100644
 
+localDb="$1"
+tmpDb="$2"
+sha="$3"
+perm="$4"
+
+#printErr "$@"
 #todo #fixme - this echos a newline if there's no diff
-echo "$(diffDb "$current" "$checked_in")"
+diff="$(diffDb "$tmpDb" "$localDb")"
+if [ -n "$diff" ]; then
+    echo "$diff"
+fi
 
 #exit 1;
