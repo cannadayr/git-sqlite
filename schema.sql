@@ -1,14 +1,11 @@
-CREATE TABLE bar (
-    id integer primary key,
-    name text,
-    time_added timestamp default current_timestamp
-);
+-- migration query
+-- sqlite> insert into charlie ( name, time_added) select name, time_added from baz;
 
 -- We are making a baseless assumption
 -- that this pseudo, ad-hoc uuid
 -- won't produce a collision
 -- so we won't need a primary key
-CREATE TABLE baz (
+CREATE TABLE charlie (
     "id" char(36) default (
         lower(hex(randomblob(4)))
             || '-'
@@ -22,5 +19,6 @@ CREATE TABLE baz (
             || lower(hex(randomblob(6)))
     ),
     name text,
-    time_added timestamp default current_timestamp
-);
+    time_added timestamp default current_timestamp,
+    primary key(id)
+) WITHOUT ROWID;
