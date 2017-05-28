@@ -1,21 +1,21 @@
 #!/bin/sh
+trunk="$(dirname "$(readlink -f $0)")"
 
-dumpDb()
-{
-    db="$1"
-    echo ".dump" | sqlite3 "$db"
-}
+. $trunk/util.sh
 
-ancestor="$(dumpDb "$1")"
-local="$(dumpDb "$2")"
-remote="$(dumpDb "$3")"
+ancestor="$1"
+local="$2"
+remote="$3"
 marker="$4"
 placeholder="$5"
 
-echo "ancestor='$ancestor'"
-echo "local='$local'"
-echo "remote='$remote'"
+ancestor2localDiff=$(diffDb "$ancestor" "$local")
+ancestor2remoteDiff=$(diffDb "$ancestor" "$remote")
+echo "ancestor2localDiff:\n\n$ancestor2localDiff"
+echo "ancestor2remoteDiff:\n\n$ancestor2remoteDiff"
+
 echo "marker='$marker'"
 echo "placeholder='$placeholder'"
 
 exit 1;
+
