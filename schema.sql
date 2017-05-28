@@ -82,8 +82,14 @@ CREATE TABLE tag (
     primary key(id)
 ) WITHOUT ROWID;
 
-/* some useful tag queries:
+/*
 
+improving our "UUIDs":
+
+select lower(printf('%08X', strftime("%s") || substr(strftime("%f"), 4, 6)));
+
+
+some useful tag queries:
 
 get all the entities that do have (some) tag
 
