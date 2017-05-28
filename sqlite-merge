@@ -11,11 +11,9 @@ placeholder="$5"
 
 ancestor2localDiff=$(diffDb "$ancestor" "$local")
 ancestor2remoteDiff=$(diffDb "$ancestor" "$remote")
-echo "ancestor2localDiff:\n\n$ancestor2localDiff"
-echo "ancestor2remoteDiff:\n\n$ancestor2remoteDiff"
-
-echo "marker='$marker'"
-echo "placeholder='$placeholder'"
-
-exit 1;
-
+echo "-- ancestor2localDiff:
+$ancestor2localDiff
+-- ancestor2remoteDiff:
+$ancestor2remoteDiff" | sqlite3 $trunk/net.db
+#echo "marker='$marker'"
+#echo "placeholder='$placeholder'"
