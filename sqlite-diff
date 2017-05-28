@@ -19,6 +19,7 @@ diffDb()
 current="$2"
 checked_in="$1"
 
+#todo #fixme - this echos a newline if there's no diff
 echo "$(diffDb "$current" "$checked_in")"
 
 #exit 1;
