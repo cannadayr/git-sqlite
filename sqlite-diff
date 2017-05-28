@@ -61,6 +61,10 @@ perm="$4"
 #todo #fixme - this echos a newline if there's no diff
 diff="$(diffDb "$toDb" "$fromDb")"
 if [ -n "$diff" ]; then
+
+    # display a bold diff header
+    printErr "$(tput bold)sqldiff $toDb $fromDb"
+    printErr "$(tput bold)index $sha $perm"
     echo "$diff"
 fi
 
