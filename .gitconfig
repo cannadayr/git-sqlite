@@ -1,6 +1,7 @@
 [diff "sqlite"]
     binary = true
-    textconv = "echo .dump | sqlite3"
+    command = ./sqlite-diff
 [merge "sqlite"]
     name = sqlite merge
     driver = ./sqlite-merge %O %A %B %L %P
+
