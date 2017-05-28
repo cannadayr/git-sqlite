@@ -10,10 +10,12 @@ diffDb()
     # NOTE: sqldiff currently can't perform diffs
     # on views or triggers
     # see: https://sqlite.org/sqldiff.html#limitations
-    # HOWEVER we might be able to get around this using
-    #   sqldiff --tables sqlite_master
-    # AND if we add a UUID to the sqlite_master table as a
-    # primary key
+    # HOWEVER there might be some paths forward:
+    #   we might be able to get around this using
+    #   the "--changeset <output file>" option
+    #   this seems to detect changes to the sqlite_master tbl
+    #   and can be applied using the 'session' extension
+    # see: https://sqlite.org/sessionintro.html
     localDb="$1"
     tmpDb="$2"
     path="$trunk/modules/sqlite3-3.16.2"
