@@ -1,5 +1,10 @@
 #!/bin/sh
 
+printErr()
+{
+    printf "%s\n" "$*" >&2;
+}
+
 diffDb()
 {
     current="$1"

@@ -11,6 +11,7 @@ placeholder="$5"
 
 #ancestor2localDiff=$(diffDb "$ancestor" "$local")
 ancestor2remoteDiff=$(diffDb "$ancestor" "$remote")
+printErr $ancestor2remoteDiff
 sqlite3 "$local" "$ancestor2remoteDiff"
 #echo "marker='$marker'"
 #echo "placeholder='$placeholder'"
