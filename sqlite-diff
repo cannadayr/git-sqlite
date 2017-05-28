@@ -1,18 +1,31 @@
-#!/bin/sh
+#!/usr/bin/env bash
 trunk="$(dirname "$(readlink -f $0)")"
 
 . $trunk/util.sh
 
 # net.db /tmp/UMzSgL_net.db 0cdcb0508857225ac4fe21d1780a25d608755903 100644 net.db 0000000000000000000000000000000000000000100644
 
-localDb="$1"
-tmpDb="$2"
+makePathAbsolute()
+{
+    path="$1"
+    firstChar=${path:0:1}
+    if [ $firstChar = '/' ]; then
+        echo "$path" # already is absolute
+    else
+        echo "$trunk/$path"
+    fi
+}
+
+fromDb="$(makePathAbsolute "$1")"
+toDb="$(makePathAbsolute "$2")"
 sha="$3"
 perm="$4"
 
-#printErr "$@"
+printErr "fromDb $fromDb"
+printErr "toDb $toDb"
+printErr "$@"
 #todo #fixme - this echos a newline if there's no diff
-diff="$(diffDb "$tmpDb" "$localDb")"
+diff="$(diffDb "$toDb" "$fromDb")"
 if [ -n "$diff" ]; then
     echo "$diff"
 fi
