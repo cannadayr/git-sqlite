@@ -10,6 +10,6 @@ diffDb()
     localDb="$1"
     tmpDb="$2"
     path="$trunk/modules/sqlite3-3.16.2"
-    $path/sqldiff "$localDb" "$tmpDb"
+    $path/sqldiff --transaction "$localDb" "$tmpDb"
 }
 
