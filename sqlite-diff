@@ -5,25 +5,59 @@ trunk="$(dirname "$(readlink -f $0)")"
 
 # net.db /tmp/UMzSgL_net.db 0cdcb0508857225ac4fe21d1780a25d608755903 100644 net.db 0000000000000000000000000000000000000000100644
 
-makePathAbsolute()
+# we get the /tmp/ param in a different spot depending on
+# what kind of diff logic/context git is performing
+# sometimes it's in $2, sometimes in $5
+# if we don't choose the /tmp/ file, we just end up diffing
+# the same file against itself and lose the proper diff.
+# even weirder, we sometimes have to swap the arguments (see below)
+getFirstTmpFileIdx()
 {
-    path="$1"
-    firstChar=${path:0:1}
-    if [ $firstChar = '/' ]; then
-        echo "$path" # already is absolute
+    path1="$1"
+    path2="$2"
+    #printErr "getFirstTmpFileVal"
+    #printErr "  path1 = $path1"
+    #printErr "  path2 = $path2"
+    path1start=${path1:0:5}
+    path2start=${path2:0:5}
+    #printErr "  path1start=$path1start"
+    #printErr "  path2start=$path2start"
+    if [ "$path1start" = '/tmp/' ]; then
+        echo 1
+    elif [ "$path2start" = '/tmp/' ]; then
+        echo 2
     else
-        echo "$trunk/$path"
+        printErr "getFirstTmpFileVal ERROR: neither '$path1' nor '$path2' are /tmp/ values"
     fi
 }
 
-fromDb="$(makePathAbsolute "$1")"
-toDb="$(makePathAbsolute "$2")"
+#printErr "$@"
+#printErr "arg1 = $1"
+#printErr "arg2 = $2"
+#printErr "arg5 = $5"
+toDbCandidate1="$2"
+toDbCandidate2="$5"
+
+# we are always interested in the /tmp/ file which has the version we're comparing to
+# depending on which arg has the /tmp/ file, we need to change the order of
+# the sqldiff args for some reason barely unknown to us
+tempFileIdx="$(getFirstTmpFileIdx "$toDbCandidate1" "$toDbCandidate2")"
+if [ $tempFileIdx = 1 ]; then
+    fromDb="$1"
+    toDb="$toDbCandidate1"
+elif [ $tempFileIdx = 2 ]; then
+    fromDb="$toDbCandidate2"
+    toDb="$1"
+else
+    printErr 'ERROR: tmpDb not set to either $2 or $5'
+fi
+
 sha="$3"
 perm="$4"
 
-printErr "fromDb $fromDb"
-printErr "toDb $toDb"
-printErr "$@"
+#printErr "fromDb $fromDb"
+#printErr "toDb $toDb"
+#printErr "$@"
 #todo #fixme - this echos a newline if there's no diff
 diff="$(diffDb "$toDb" "$fromDb")"
 if [ -n "$diff" ]; then
