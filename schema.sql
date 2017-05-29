@@ -72,11 +72,6 @@ AND t2e.tag_id = t.id;
 
 /*
 
-improving our "UUIDs":
-
-select lower(printf('%08X', strftime("%s") || substr(strftime("%f"), 4, 6)));
-
-
 some useful tag queries:
 
 get all the entities that do have (some) tag
@@ -104,5 +99,34 @@ adding a tags to an entity:
 insert into tag2entity (tag_id, entity_id)
 values ( (select id from tag where name='<name of tag>'),
          (select id from entity where name='<name of entity>') )
+
+
+improving our "UUIDs":
+
+select replace(julianday(),".","");
+select substr('0000000000000000' || replace(julianday(),".",""), -16, 16);
+
+ select substr(replace(julianday(),".","") || '0000000000000000', 1, 16);
+
+
+select lower(printf('%08X', strftime("%s") || substr(strftime("%f"), 4, 6)));
+
+select lower(hex(randomblob(4)))
+    || '-'
+    || lower(hex(randomblob(2)))
+    || '-4'
+    || substr(lower(hex(randomblob(2))),2)
+    || '-'
+    || substr('89ab',abs(random()) % 4 + 1, 1)
+    || substr(lower(hex(randomblob(2))),2)
+    || '-'
+    || lower(hex(randomblob(6)));
+
+name                                length(hex)     description
+time_low                            8               integer giving the low 32 bits of the time
+time_mid                            4               integer giving the middle 16 bits of the time
+time_hi_and_version                 4               4-bit "version" in the most significant bits, followed by the high 12 bits of the time
+clock_seq_hi_and_res clock_seq_low  4               1-3 bit "variant" in the most significant bits, followed by the 13-15 bit clock sequence
+node                                12              the 48-bit node id
 
 */
