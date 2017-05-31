@@ -1,5 +1,12 @@
 #!/bin/sh
 
+# possible solution for xplatform readlink
+# see: https://stackoverflow.com/questions/1055671/how-can-i-get-the-behavior-of-gnus-readlink-f-on-a-mac
+function readlink() {
+  DIR=$(echo "${1%/*}")
+  (cd "$DIR" && echo "$(pwd -P)")
+}
+
 printErr()
 {
     printf "%s\n" "$*" >&2;
