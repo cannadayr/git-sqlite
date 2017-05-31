@@ -4,4 +4,6 @@
 [merge "sqlite"]
     name = sqlite merge
     driver = ./sqlite-merge %O %A %B %L %P
+[alias]
+	show-sql = show --ext-diff
 
