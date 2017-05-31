@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
-trunk="$(dirname "$(readlink -f $0)")"
+
+#todo #fixme - find a way to avoid duplicating this logic at the top
+#              currently it's in both sqlite-diff and sqlite-merge
+isDarwin() {
+    [ "$(uname)" == "Darwin" ]
+}
+# Mac OS X has different readlink behavior, so use GNU coreutils greadlink
+if isDarwin; then
+    readlinkCmd=greadlink
+else
+    readlinkCmd=readlink
+fi
+trunk="$(dirname "$($readlinkCmd -f $0)")"
 
 . $trunk/util.sh
 
@@ -15,16 +27,14 @@ getFirstTmpFileIdx()
 {
     path1="$1"
     path2="$2"
-    #printErr "getFirstTmpFileVal"
-    #printErr "  path1 = $path1"
-    #printErr "  path2 = $path2"
-    path1start=${path1:0:5}
-    path2start=${path2:0:5}
-    #printErr "  path1start=$path1start"
-    #printErr "  path2start=$path2start"
-    if [ "$path1start" = '/tmp/' ]; then
+    path1start=${path1:0:1}
+    path2start=${path2:0:1}
+
+    # not actually looking in /tmp/ because MacOS stores its temp files elsewhere
+    # just look for any absolute path
+    if [ "$path1start" = '/' ]; then
         echo 1
-    elif [ "$path2start" = '/tmp/' ]; then
+    elif [ "$path2start" = '/' ]; then
         echo 2
     else
         printErr "getFirstTmpFileVal ERROR: neither '$path1' nor '$path2' are /tmp/ values"
