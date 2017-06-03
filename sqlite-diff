@@ -41,7 +41,7 @@ getFirstTmpFileIdx()
     fi
 }
 
-#printErr "$@"
+printErr "$@"
 #printErr "arg1 = $1"
 #printErr "arg2 = $2"
 #printErr "arg5 = $5"
@@ -65,11 +65,14 @@ fi
 sha="$3"
 perm="$4"
 
-#printErr "fromDb $fromDb"
-#printErr "toDb $toDb"
+printErr "fromDb $fromDb"
+printErr "$(sqlite3 "$fromDb" ".dump")"
+printErr "toDb $toDb"
+printErr "$(sqlite3 "$toDb" ".dump")"
 #printErr "$@"
 #todo #fixme - this echos a newline if there's no diff
-diff="$(diffDb "$toDb" "$fromDb")"
+#diff="$(diffDb "$toDb" "$fromDb")"
+diff="$(diffDb "$fromDb" "$toDb")"
 if [ -n "$diff" ]; then
 
     # display a bold diff header
