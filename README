@@ -8,8 +8,11 @@ TODO:
 
 GETTING STARTED
 ===============
+
+New Repository (debian linux)
+-----------------------------
 mkdir -p new-repo/modules
-git clone <git-sqlite-repo> new-repo/.git-sqlite
+git clone bomb.sh:/var/git/git-sqlite.git new-repo/.git-sqlite
 cd new-repo/modules
 wget https://www.sqlite.org/src/tarball/sqlite.tar.gz?r=release
 tar xzf sqlite.tar.gz?r=release
