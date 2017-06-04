@@ -8,6 +8,5 @@ TODO:
         - smuggle .gitconfig kv-pairs into repo
         - cross platform way of getting sqldiff
     - detecting diffed triggers & views
-    - `git-show` cmd (currently using `git-show-sql` alias but sqlite-diff doesn't know the right params)
     - new columns from alter table dont have explicit types (low priority)
 
