@@ -1,4 +1,5 @@
 <?php
+    $db_type = 'sqlite';
     $git_sqlite_trunk = dirname(dirname(__FILE__));
     $db_name = "$git_sqlite_trunk/net.db";
     $id_mode = 'id_only';
