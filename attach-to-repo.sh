@@ -63,7 +63,7 @@ if isAbsPath "$sqldiff"; then
     sqldiffPath="$sqldiff"
     sqldiffTestPath="$sqldiffPath"
 else
-    sqldiffPath="\$GIT_DIR/../$sqldiff"
+    sqldiffPath="./$sqldiff"
     sqldiffTestPath="$repoPath/$sqldiff"
 fi
 
@@ -83,7 +83,7 @@ if ! [ -f "$repoPath/$db" ]; then
         schemaPath="$schema"
         schemaTestPath="$schemaPath"
     else
-        schemaPath="\$GIT_DIR/../$schema"
+        schemaPath="./$schema"
         schemaTestPath="$repoPath/$schema"
     fi
 
@@ -119,11 +119,11 @@ cp sqlite-merge "$repoPath/.git-sqlite/sqlite-merge"
 cd $repo &&
 # add diff section
 git config diff.sqlite.binary "true"
-git config diff.sqlite.command "\$GIT_DIR/../.git-sqlite/sqlite-diff $sqldiffPath"
+git config diff.sqlite.command "./.git-sqlite/sqlite-diff $sqldiffPath"
 
 # add merge section
 git config merge.sqlite.name "sqlite merge"
-git config merge.sqlite.driver "\$GIT_DIR/../.git-sqlite/sqlite-merge $sqldiffPath %O %A %B %L %P"
+git config merge.sqlite.driver "./.git-sqlite/sqlite-merge $sqldiffPath %O %A %B %L %P"
 
 # add git show-sql alias
 git config alias.show-sql "show --ext-diff"
