@@ -116,4 +116,11 @@ where not exists (
     where t2e.entity_id = e.id
 )
 
+
+adding a tags to an entity:
+
+insert into tag2entity (tag_id, entity_id)
+values ( (select id from tag where name='<name of tag>'),
+         (select id from entity where name='<name of entity>') )
+
 */
