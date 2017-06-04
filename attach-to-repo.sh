@@ -1,6 +1,7 @@
 #!/bin/bash
 repo="$1" # repo to attach to
 db="$2" # relative path to sqlite db inside repo
+trunk="$(dirname "$0")"
 
 # if sqldiff or the schema is given as a relative path,
 # lets assume its relative inside the repo
@@ -111,11 +112,12 @@ if [ ! -d "$repoPath/.git-sqlite" ]; then
 fi
 
 # copy util, sqlite-diff & sqlite-merge
-#TODO if sqlite-diff is a module inside repo
-# lets detect that and set config paths 'as-is'
-cp util.sh "$repoPath/.git-sqlite/util.sh"
-cp sqlite-diff "$repoPath/.git-sqlite/sqlite-diff"
-cp sqlite-merge "$repoPath/.git-sqlite/sqlite-merge"
+# if we're not already inside the repo
+if [ ! "$trunk" -ef "$repoPath/.git-sqlite" ]; then
+    cp "$trunk/util.sh" "$repoPath/.git-sqlite/util.sh"
+    cp "$trunk/sqlite-diff" "$repoPath/.git-sqlite/sqlite-diff"
+    cp "$trunk/sqlite-merge" "$repoPath/.git-sqlite/sqlite-merge"
+fi
 
 # modify local .git/config
 cd $repo &&
