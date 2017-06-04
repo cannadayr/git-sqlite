@@ -1,5 +1,5 @@
 <?php
-    $git_sqlite_trunk = dirname(__FILE__);
+    $git_sqlite_trunk = dirname(dirname(__FILE__));
     $db_name = "$git_sqlite_trunk/net.db";
     $id_mode = 'id_only';
     $fields_to_make_selects = array(
