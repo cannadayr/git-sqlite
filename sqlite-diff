@@ -32,7 +32,12 @@ getFirstTmpFileIdx()
 
     # not actually looking in /tmp/ because MacOS stores its temp files elsewhere
     # just look for any absolute path
-    if [ "$path1start" = '/' ]; then
+    if [ "$path1start" = '/' ] \
+        && [ "$path2start" = "/" ]
+    then
+        # we are probably doing a `git show-sql`
+        echo 0
+    elif [ "$path1start" = '/' ]; then
         echo 1
     elif [ "$path2start" = '/' ]; then
         echo 2
@@ -44,15 +49,25 @@ getFirstTmpFileIdx()
 printErr "$@"
 #printErr "arg1 = $1"
 #printErr "arg2 = $2"
+#arg2Content=$(echo ".dump" | sqlite3 "$2")
+#printErr "arg2 = $arg2Content"
+#arg5Content=$(echo ".dump" | sqlite3 "$5")
+#printErr "arg5 = $arg5Content"
 #printErr "arg5 = $5"
 toDbCandidate1="$2"
 toDbCandidate2="$5"
+printErr "toDbCandidate1 = $toDbCandidate1"
+printErr "toDbCandidate2 = $toDbCandidate2"
 
 # we are always interested in the /tmp/ file which has the version we're comparing to
 # depending on which arg has the /tmp/ file, we need to change the order of
 # the sqldiff args for some reason barely unknown to us
 tempFileIdx="$(getFirstTmpFileIdx "$toDbCandidate1" "$toDbCandidate2")"
-if [ $tempFileIdx = 1 ]; then
+printErr "tempFileIdx $tempFileIdx"
+if [ $tempFileIdx = 0 ]; then
+    fromDb="$2"
+    toDb="$5"
+elif [ $tempFileIdx = 1 ]; then
     fromDb="$1"
     toDb="$toDbCandidate1"
 elif [ $tempFileIdx = 2 ]; then
@@ -66,9 +81,9 @@ sha="$3"
 perm="$4"
 
 printErr "fromDb $fromDb"
-printErr "$(sqlite3 "$fromDb" ".dump")"
+#printErr "$(sqlite3 "$fromDb" ".dump")"
 printErr "toDb $toDb"
-printErr "$(sqlite3 "$toDb" ".dump")"
+#printErr "$(sqlite3 "$toDb" ".dump")"
 #printErr "$@"
 #todo #fixme - this echos a newline if there's no diff
 #diff="$(diffDb "$toDb" "$fromDb")"
