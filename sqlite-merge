@@ -15,14 +15,15 @@ trunk="$(dirname "$($readlinkCmd -f $0)")"
 
 . $trunk/util.sh
 
-ancestor="$1"
-local="$2"
-remote="$3"
-marker="$4"
-placeholder="$5"
+sqldiff="$1"
+ancestor="$2"
+local="$3"
+remote="$4"
+marker="$5"
+placeholder="$6"
 
 #ancestor2localDiff=$(diffDb "$ancestor" "$local")
-ancestor2remoteDiff=$(diffDb "$ancestor" "$remote")
+ancestor2remoteDiff=$(diffDb "$sqldiff" "$ancestor" "$remote")
 printErr $ancestor2remoteDiff
 sqlite3 "$local" "$ancestor2remoteDiff"
 #echo "marker='$marker'"

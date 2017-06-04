@@ -46,33 +46,36 @@ getFirstTmpFileIdx()
     fi
 }
 
-printErr "$@"
+#printErr "$@"
 #printErr "arg1 = $1"
-#printErr "arg2 = $2"
+#printErr "arg3 = $3"
 #arg2Content=$(echo ".dump" | sqlite3 "$2")
 #printErr "arg2 = $arg2Content"
 #arg5Content=$(echo ".dump" | sqlite3 "$5")
 #printErr "arg5 = $arg5Content"
-#printErr "arg5 = $5"
-toDbCandidate1="$2"
-toDbCandidate2="$5"
-printErr "toDbCandidate1 = $toDbCandidate1"
-printErr "toDbCandidate2 = $toDbCandidate2"
+#printErr "arg6 = $6"
+sqldiff="$1"
+toDbCandidate1="$3"
+toDbCandidate2="$6"
+#printErr "toDbCandidate1 = $toDbCandidate1"
+#printErr "toDbCandidate2 = $toDbCandidate2"
 
 # we are always interested in the /tmp/ file which has the version we're comparing to
 # depending on which arg has the /tmp/ file, we need to change the order of
 # the sqldiff args for some reason barely unknown to us
 tempFileIdx="$(getFirstTmpFileIdx "$toDbCandidate1" "$toDbCandidate2")"
-printErr "tempFileIdx $tempFileIdx"
+#printErr "tempFileIdx $tempFileIdx"
 if [ $tempFileIdx = 0 ]; then
-    fromDb="$2"
-    toDb="$5"
+    fromDb="$3"
+    toDb="$6"
 elif [ $tempFileIdx = 1 ]; then
-    fromDb="$1"
-    toDb="$toDbCandidate1"
+    #fromDb="$2"
+    fromDb="$toDbCandidate1"
+    #toDb="$toDbCandidate1"
+    toDb="$2"
 elif [ $tempFileIdx = 2 ]; then
     fromDb="$toDbCandidate2"
-    toDb="$1"
+    toDb="$2"
 else
     printErr 'ERROR: tmpDb not set to either $2 or $5'
 fi
@@ -80,14 +83,14 @@ fi
 sha="$3"
 perm="$4"
 
-printErr "fromDb $fromDb"
+#printErr "fromDb $fromDb"
 #printErr "$(sqlite3 "$fromDb" ".dump")"
-printErr "toDb $toDb"
+#printErr "toDb $toDb"
 #printErr "$(sqlite3 "$toDb" ".dump")"
 #printErr "$@"
 #todo #fixme - this echos a newline if there's no diff
 #diff="$(diffDb "$toDb" "$fromDb")"
-diff="$(diffDb "$fromDb" "$toDb")"
+diff="$(diffDb "$sqldiff" "$fromDb" "$toDb")"
 if [ -n "$diff" ]; then
 
     # display a bold diff header

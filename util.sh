@@ -16,17 +16,19 @@ diffDb()
     #   this seems to detect changes to the sqlite_master tbl
     #   and can be applied using the 'session' extension
     # see: https://sqlite.org/sessionintro.html
-    localDb="$1"
-    tmpDb="$2"
+    sqldiff="$1"
+    #printErr $sqldiff
+    localDb="$2"
+    tmpDb="$3"
     #todo #fixme On Mac OS X I had to use the original SQLite source
     #            instead of the Debian package included as /sqlite3-3.16.2
     #            Let's decide on a unified path: I nominate /sqlite-build.
     #               ~ RM
-    if isDarwin; then
-        path="$trunk/modules/sqlite-build"
-    else
-        path="$trunk/modules/sqlite3-3.16.2"
-    fi
-    $path/sqldiff --transaction "$localDb" "$tmpDb"
+    #if isDarwin; then
+    #    path="$trunk/modules/sqlite-build"
+    #else
+    #    path="$trunk/modules/sqlite3-3.16.2"
+    #fi
+    $sqldiff --transaction "$localDb" "$tmpDb"
 }
 
