@@ -6,3 +6,17 @@ TODO:
     - new columns from alter table dont have explicit types
     - uuid version 1 style
 
+GETTING STARTED
+===============
+mkdir -p new-repo/modules
+git clone <git-sqlite-repo> new-repo/.git-sqlite
+cd new-repo/modules
+wget https://www.sqlite.org/src/tarball/sqlite.tar.gz?r=release
+tar xzf sqlite.tar.gz?r=release
+cd sqlite
+./configure
+make sqldiff
+cd ../../
+git init
+./.git-sqlite/attach-to-repo.sh . sqlite.db modules/sqlite/sqldiff ./.git-sqlite/schema.sql
+
