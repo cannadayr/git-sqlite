@@ -93,7 +93,7 @@ if ! [ -f "$repoPath/$db" ]; then
         echo "schema is not given or is not a file" >&2
         exit 1
     else
-        sqlite3 "$repoPath/$db" < schema.sql
+        sqlite3 "$repoPath/$db" < "$schemaPath"
     fi
 fi
 
