@@ -1,17 +1,6 @@
 #!/usr/bin/env bash
 
-#todo #fixme - find a way to avoid duplicating this logic at the top
-#              currently it's in both sqlite-diff and sqlite-merge
-isDarwin() {
-    [ "$(uname)" == "Darwin" ]
-}
-# Mac OS X has different readlink behavior, so use GNU coreutils greadlink
-if isDarwin; then
-    readlinkCmd=greadlink
-else
-    readlinkCmd=readlink
-fi
-trunk="$(dirname "$($readlinkCmd -f $0)")"
+trunk="$(dirname $0)"
 
 . $trunk/util.sh
 
