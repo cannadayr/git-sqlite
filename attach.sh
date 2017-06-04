@@ -34,7 +34,7 @@ if [ -z "$repo" ] \
     || [ -z "$db" ] \
     || [ -z "$sqldiff" ]
 then
-    echo "usage: attach-to-repo.sh <git repo path to attach to> <sqlite database relative path within repo> <path to sqldiff> [<init schema>]" >&2
+    echo "usage: attach.sh <git repo path to attach to> <sqlite database relative path within repo> <path to sqldiff> [<init schema>]" >&2
     echo "if sqldiff or schema is given as a relative path, it is assumed to be inside the git repo" >&2
     exit 1
 fi

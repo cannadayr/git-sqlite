@@ -18,5 +18,5 @@ cd sqlite
 make sqldiff
 cd ../../
 git init
-./.git-sqlite/attach-to-repo.sh . sqlite.db modules/sqlite/sqldiff ./.git-sqlite/schema.sql
+./.git-sqlite/attach.sh . sqlite.db modules/sqlite/sqldiff ./.git-sqlite/schema.sql
 
