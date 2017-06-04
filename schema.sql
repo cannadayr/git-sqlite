@@ -82,6 +82,12 @@ CREATE TABLE tag (
     primary key(id)
 ) WITHOUT ROWID;
 
+CREATE VIEW entity_tags AS
+
+SELECT * FROM entity e, tag2entity t2e, tag t
+WHERE t2e.entity_id = e.id
+AND t2e.tag_id = t.id;
+
 /*
 
 improving our "UUIDs":
