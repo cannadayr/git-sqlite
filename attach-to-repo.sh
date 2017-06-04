@@ -111,6 +111,8 @@ if [ ! -d "$repoPath/.git-sqlite" ]; then
 fi
 
 # copy util, sqlite-diff & sqlite-merge
+#TODO if sqlite-diff is a module inside repo
+# lets detect that and set config paths 'as-is'
 cp util.sh "$repoPath/.git-sqlite/util.sh"
 cp sqlite-diff "$repoPath/.git-sqlite/sqlite-diff"
 cp sqlite-merge "$repoPath/.git-sqlite/sqlite-merge"

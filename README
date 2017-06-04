@@ -1,12 +1,8 @@
 Dependencies: #TODO maybe turn into ansible playbook or shell script?
     - sqlite3 (sqldiff)
-    - for Mac OS X: coreutils (for greadlink -F)
-        brew install coreutils
 
 TODO:
-    - method for "applying" git-sqlite to an existing repository
-        - smuggle .gitconfig kv-pairs into repo
-        - cross platform way of getting sqldiff
     - detecting diffed triggers & views
-    - new columns from alter table dont have explicit types (low priority)
+    - new columns from alter table dont have explicit types
+    - uuid version 1 style
 

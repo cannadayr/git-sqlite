@@ -4,8 +4,6 @@ trunk="$(dirname $0)"
 
 . $trunk/util.sh
 
-# net.db /tmp/UMzSgL_net.db 0cdcb0508857225ac4fe21d1780a25d608755903 100644 net.db 0000000000000000000000000000000000000000100644
-
 # we get the /tmp/ param in a different spot depending on
 # what kind of diff logic/context git is performing
 # sometimes it's in $2, sometimes in $5
@@ -36,13 +34,6 @@ getFirstTmpFileIdx()
 }
 
 #printErr "$@"
-#printErr "arg1 = $1"
-#printErr "arg3 = $3"
-#arg2Content=$(echo ".dump" | sqlite3 "$2")
-#printErr "arg2 = $arg2Content"
-#arg5Content=$(echo ".dump" | sqlite3 "$5")
-#printErr "arg5 = $arg5Content"
-#printErr "arg6 = $6"
 sqldiff="$1"
 toDbCandidate1="$3"
 toDbCandidate2="$6"
@@ -54,13 +45,12 @@ toDbCandidate2="$6"
 # the sqldiff args for some reason barely unknown to us
 tempFileIdx="$(getFirstTmpFileIdx "$toDbCandidate1" "$toDbCandidate2")"
 #printErr "tempFileIdx $tempFileIdx"
+
 if [ $tempFileIdx = 0 ]; then
     fromDb="$3"
     toDb="$6"
 elif [ $tempFileIdx = 1 ]; then
-    #fromDb="$2"
     fromDb="$toDbCandidate1"
-    #toDb="$toDbCandidate1"
     toDb="$2"
 elif [ $tempFileIdx = 2 ]; then
     fromDb="$toDbCandidate2"
@@ -76,9 +66,8 @@ perm="$4"
 #printErr "$(sqlite3 "$fromDb" ".dump")"
 #printErr "toDb $toDb"
 #printErr "$(sqlite3 "$toDb" ".dump")"
-#printErr "$@"
+
 #todo #fixme - this echos a newline if there's no diff
-#diff="$(diffDb "$toDb" "$fromDb")"
 diff="$(diffDb "$sqldiff" "$fromDb" "$toDb")"
 if [ -n "$diff" ]; then
 
