@@ -1,8 +1,9 @@
-Dependencies: #TODO maybe turn into ansible playbook or shell script?
+Dependencies:
     - sqlite3 (sqldiff)
 
 TODO:
-    - detecting diffed triggers & views
+    - trigger merge conflict when 2 rows with same id get updated
+    - detecting diffed triggers & views (maybe should be handled in sqldiff upstream)
     - new columns from alter table dont have explicit types
     - uuid version 1 style
 
