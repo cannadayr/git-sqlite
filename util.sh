@@ -19,7 +19,13 @@ diffDb()
     sqldiff="$1"
     localDb="$2"
     tmpDb="$3"
+    noTransaction="$4"
 
-    $sqldiff --transaction "$localDb" "$tmpDb"
+    transactionStr=""
+    if [ -n $noTransaction ]; then
+        transactionStr="--transaction"
+    fi
+
+    $sqldiff $transactionStr "$localDb" "$tmpDb"
 }
 
