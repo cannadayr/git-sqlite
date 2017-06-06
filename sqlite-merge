@@ -1,18 +1,5 @@
 #!/usr/bin/env bash
 
-# TODO git conflicts
-#   sqldiff 0 to A
-#   sqldiff 0 to B
-#   apply sqldiff `0 to A` to B
-#   apply sqldiff `0 to B` to A
-#   if new A and new B are different then there was a conflict
-#   then:
-#       set conflict markers/placeholders in record (don't break sqlite db)
-#       maybe return a select query of the keys
-
-# possible tools:
-# git diff --no-index ... => don't need a git tree
-
 trunk="$(dirname $0)"
 
 . $trunk/util.sh
@@ -24,10 +11,45 @@ remote="$4"
 marker="$5"
 placeholder="$6"
 
-ancestor2remoteDiff=$(diffDb "$sqldiff" "$ancestor" "$remote")
-printErr $ancestor2remoteDiff
+#printErr "local=$local"
+#printErr "remote=$remote"
+
+# get the diffs from the common ancestor to our states
+ancestor2localDiff="$(diffDb "$sqldiff" "$ancestor" "$local")"
+ancestor2remoteDiff="$(diffDb "$sqldiff" "$ancestor" "$remote")"
+
+# apply each diff to its counterpart
 sqlite3 "$local" "$ancestor2remoteDiff"
+sqlite3 "$remote" "$ancestor2localDiff"
+
+# diff our db's again
+local2remote="$(diffDb "$sqldiff" "$local" "$remote" "--no-transaction")"
+remote2local="$(diffDb "$sqldiff" "$remote" "$local" "--no-transaction")"
+
+# get tmp files
+local2remoteTmp="$(mktemp)"
+remote2localTmp="$(mktemp)"
+
+# add the contents
+echo "$local2remote" > "$local2remoteTmp"
+echo "$remote2local" > "$remote2localTmp"
+
+# word diff the tmp files
+gitDiff="$(git diff --no-index --word-diff=porcelain "$local2remoteTmp" "$remote2localTmp")"
+
+# throw a conflict warning if theres a diff still
+if [ -n "$gitDiff" ]; then
+    printErr "$gitDiff"
+
+    #TODO update the conflicting field with markers and content
+    exit 1
+fi
+
+# apply the diff
+#sqlite3 "$local" "$ancestor2remoteDiff"
 
 #echo "marker='$marker'"
 #echo "placeholder='$placeholder'"
-#exit 1
+
+exit 1
+
