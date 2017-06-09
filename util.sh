@@ -22,7 +22,7 @@ diffDb()
     noTransaction="$4"
 
     transactionStr=""
-    if [ -n $noTransaction ]; then
+    if [ -z "$noTransaction" ]; then
         transactionStr="--transaction"
     fi
 
