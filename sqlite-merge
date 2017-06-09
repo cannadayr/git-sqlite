@@ -35,13 +35,36 @@ echo "$local2remote" > "$local2remoteTmp"
 echo "$remote2local" > "$remote2localTmp"
 
 # word diff the tmp files
-gitDiff="$(git diff --no-index --word-diff=porcelain "$local2remoteTmp" "$remote2localTmp")"
+gitDiff="$(git diff --no-index "$local2remoteTmp" "$remote2localTmp")"
 
 # throw a conflict warning if theres a diff still
 if [ -n "$gitDiff" ]; then
-    printErr "$gitDiff"
+    #printErr "$gitDiff"
 
     #TODO update the conflicting field with markers and content
+
+    # get the primary keys being updated
+    # not ideal way of getting primary key #TODO improve
+    diffedLines="$(
+        echo "$gitDiff" \
+        | grep "^\([+-]\)\{1\}UPDATE"
+    )"
+
+    cleanDiffedLines="$(
+        echo "$diffedLines" \
+        | sed -e "s/^[+-]//"
+    )"
+
+    primaryKey="$( echo "$cleanDiffedLines" \
+        | sed -e "s/^.* id='//g" \
+        | sed -e "s/'.*$//" \
+        | sort \
+        | uniq
+    )"
+
+    selectQuery="select * from entity where id='$primaryKey';"
+    printErr "$selectQuery"
+
     exit 1
 fi
 
