@@ -46,10 +46,8 @@ if [ -n "$gitDiff" ]; then
 fi
 
 # apply the diff
-#sqlite3 "$local" "$ancestor2remoteDiff"
+sqlite3 "$local" "$ancestor2remoteDiff"
 
 #echo "marker='$marker'"
 #echo "placeholder='$placeholder'"
-
-exit 1
 
