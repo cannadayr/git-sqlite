@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+prefix="@prefix@"
+pkgdatadir="@datarootdir@/@PACKAGE@"  # e.g. /usr/local/share/PACKAGE/
+
+. "$pkgdatadir/util.sh"
+
 # TODO git conflicts
 #   sqldiff 0 to A
 #   sqldiff 0 to B

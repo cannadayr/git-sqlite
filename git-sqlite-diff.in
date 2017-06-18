@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-trunk="$(dirname $0)"
+prefix="@prefix@"
+pkgdatadir="@datarootdir@/@PACKAGE@"  # e.g. /usr/local/share/PACKAGE/
 
-. $trunk/util.sh
+. "$pkgdatadir/util.sh"
 
 # we get the /tmp/ param in a different spot depending on
 # what kind of diff logic/context git is performing
