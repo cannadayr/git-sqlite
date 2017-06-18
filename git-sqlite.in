@@ -52,6 +52,7 @@ init()
 attach()
 {
     repo="$(pwd)"
+    db="$1"
 
     # test if theres a .git directory
     if [ ! -d "$repo/.git" ]
@@ -60,7 +61,30 @@ attach()
         exit 1
     fi
 
-    printErr "$repo"
+    # add diff section
+    git config diff.sqlite.binary "true"
+    git config diff.sqlite.command "git-sqlite-diff"
+
+    # add merge section
+    git config merge.sqlite.name "sqlite merge"
+    git config merge.sqlite.driver "git-sqlite-merge %O %A %B %L %P"
+
+    # add git show-sql alias
+    git config alias.show-sql "show --ext-diff"
+
+    # modify local .gitattributes
+    attributes="$db diff=sqlite merge=sqlite"
+
+    touch "$repo/.gitattributes"
+
+    stringContains()
+    {
+        [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]
+    }
+
+    if ! stringContains "$attributes" "$(cat "$repo/.gitattributes")"; then
+        echo "$attributes" >> "$repo/.gitattributes"
+    fi
 }
 
 # Default values for parameters
@@ -91,7 +115,7 @@ db="$2"
 
 # run the command
 case $cmd in
-    "init")   init;;
-    "attach") attach;;
+    "init")   init "$db";;
+    "attach") attach "$db";;
     *)      die "unknown command. See -h for help"
 esac
