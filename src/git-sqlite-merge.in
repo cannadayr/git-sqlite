@@ -13,6 +13,8 @@ remote="$3"
 marker="$4"
 placeholder="$5"
 
+#printErr "marker='$marker'"
+#printErr "placeholder='$placeholder'"
 #printErr "local=$local"
 #printErr "remote=$remote"
 
@@ -44,15 +46,12 @@ if [ -n "$gitDiff" ]; then
     #printErr "$gitDiff"
 
     query="$(echo "$gitDiff" | git-sqlite-diff-parse )"
-    printErr "\n\n$query"
-    #sqlite3 "$local" "$query"
+    #printErr "$query"
+    sqlite3 "$local" "$query"
     #TODO update the conflicting field with markers and content
     exit 1
 fi
 
 # apply the diff
 sqlite3 "$local" "$ancestor2remoteDiff"
-
-#echo "marker='$marker'"
-#echo "placeholder='$placeholder'"
 
