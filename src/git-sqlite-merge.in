@@ -41,10 +41,12 @@ gitDiff="$(git diff --no-index --word-diff=porcelain "$local2remoteTmp" "$remote
 
 # throw a conflict warning if theres a diff still
 if [ -n "$gitDiff" ]; then
-    printErr "$gitDiff"
+    #printErr "$gitDiff"
 
+    query="$(echo "$gitDiff" | git-sqlite-diff-parse )"
+    #printErr "$query"
+    sqlite3 "$local" "$query"
     #TODO update the conflicting field with markers and content
-    #TODO pipe diff into diff.pl and execute output
     exit 1
 fi
 

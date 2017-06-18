@@ -5,14 +5,23 @@ use warnings;
 
 my $diff = <>;
 
-#print "$diff\n\n";
-if ($diff =~ /UPDATE (\w+) SET\n[-](\w+)='(.*?)'\n[+](\w+)='(.*?)'\n\s+WHERE id='(.*?)'/) {
-    my $table = $1;
-    my $col1 = $2;
-    my $val1 = $3;
-    my $col2 = $4;
-    my $val2 = $5;
-    my $id = $6;
+#print "\n\n$diff\n\n";
+my @matches = $diff =~ m/
+    ^\ UPDATE\ (\w+)\ SET\s+
+    ^[-](\w+)='(.*?)'\s+
+    ^[+]\w+='(.*?)'\s+
+    ^\s\sWHERE\sid='(.*?)';
+    /xmg;
 
-    print "\nupdate $table set $col1 = '<<<$val1===$val2>>>' where id = '$id'\n";
-}
+my $tbl = $1;
+my $column = $2;
+my $vol1 = $3;
+my $vol2 = $4;
+my $id = $5;
+
+my $query = "update $tbl set $column = '<<<$vol1===$vol2>>>' where id='$id';";
+my $select = "select $column from $tbl where id='$id';";
+
+print "$query\n";
+print STDERR "$select\n";
+#print "Matches are @matches\n";
