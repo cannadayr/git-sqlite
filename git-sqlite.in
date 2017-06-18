@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+prefix="@prefix@"
+pkgdatadir="@datarootdir@/@PACKAGE@"  # e.g. /usr/local/share/PACKAGE/
+
+. "$pkgdatadir/util.sh"
 
 die()
 {
