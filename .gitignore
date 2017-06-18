@@ -14,3 +14,4 @@ git-sqlite
 git-sqlite-diff
 git-sqlite-diff-parse
 git-sqlite-merge
+schema.sql

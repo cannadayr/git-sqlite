@@ -6,18 +6,7 @@
 -- won't produce a collision
 -- so we won't need a primary key
 CREATE TABLE entity (
-    "id" char(36) default (
-        lower(hex(randomblob(4)))
-            || '-'
-            || lower(hex(randomblob(2)))
-            || '-4'
-            || substr(lower(hex(randomblob(2))),2)
-            || '-'
-            || substr('89ab',abs(random()) % 4 + 1, 1)
-            || substr(lower(hex(randomblob(2))),2)
-            || '-'
-            || lower(hex(randomblob(6)))
-    ),
+    "id" char(36) default (@uuidv4@),
     name text,
     txt text,
     time_added timestamp default current_timestamp,
@@ -25,18 +14,7 @@ CREATE TABLE entity (
 ) WITHOUT ROWID;
 
 CREATE TABLE tag2entity (
-    "id" char(36) default (
-        lower(hex(randomblob(4)))
-            || '-'
-            || lower(hex(randomblob(2)))
-            || '-4'
-            || substr(lower(hex(randomblob(2))),2)
-            || '-'
-            || substr('89ab',abs(random()) % 4 + 1, 1)
-            || substr(lower(hex(randomblob(2))),2)
-            || '-'
-            || lower(hex(randomblob(6)))
-    ),
+    "id" char(36) default (@uuidv4@),
     entity_id char(36), -- id
     tag_id char(36), -- id
     time_added timestamp default current_timestamp,
@@ -46,18 +24,7 @@ CREATE INDEX tag2entity__entity_id ON tag2entity(entity_id);
 CREATE INDEX tag2entity__tag_id ON tag2entity(tag_id);
 
 CREATE TABLE tag (
-    "id" char(36) default (
-        lower(hex(randomblob(4)))
-            || '-'
-            || lower(hex(randomblob(2)))
-            || '-4'
-            || substr(lower(hex(randomblob(2))),2)
-            || '-'
-            || substr('89ab',abs(random()) % 4 + 1, 1)
-            || substr(lower(hex(randomblob(2))),2)
-            || '-'
-            || lower(hex(randomblob(6)))
-    ),
+    "id" char(36) default (@uuidv4@),
     name text,
     txt text,
     time_added timestamp default current_timestamp,
