@@ -5,6 +5,10 @@ AM_INIT_AUTOMAKE([foreign])
 AC_CHECK_PROG(bash,[bash],[bash],[no])
 test "$bash" == "no" && AC_MSG_ERROR([Required program 'bash' not found.])
 
+# check for sqlite3
+AC_CHECK_PROG(sqlite3,[sqlite3],[sqlite3],[no])
+test "$sqlite3" == "no" && AC_MSG_ERROR([Required program 'sqlite3' not found.])
+
 # check for sqldiff
 AC_CHECK_PROG(sqldiff,[sqldiff],[sqldiff],[no])
 test "$sqldiff" == "no" && AC_MSG_ERROR([Required program 'sqldiff' not found.])
