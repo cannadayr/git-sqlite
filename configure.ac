@@ -18,7 +18,7 @@ AC_CHECK_PROG(git,[git],[git],[no])
 test "$git" == "no" && AC_MSG_ERROR([Required program 'git' not found.])
 
 # uuid_v4
-uuidv4="
+uuidv4="m4_normalize(
     lower(hex(randomblob(4))) \
         || '-' \
         || lower(hex(randomblob(2))) \
@@ -29,7 +29,7 @@ uuidv4="
         || substr(lower(hex(randomblob(2))),2) \
         || '-' \
         || lower(hex(randomblob(6))) \
-"
+)"
 AC_SUBST([uuidv4])
 
 # Auto-generated warnings.
