@@ -18,10 +18,6 @@ pkgdatadir="@datarootdir@/@PACKAGE@"  # e.g. /usr/local/share/PACKAGE/
 # possible tools:
 # git diff --no-index ... => don't need a git tree
 
-trunk="$(dirname $0)"
-
-. $trunk/util.sh
-
 sqldiff="$1"
 ancestor="$2"
 local="$3"

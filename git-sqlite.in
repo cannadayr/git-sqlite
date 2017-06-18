@@ -1,10 +1,5 @@
 #!/bin/bash
 
-printErr()
-{
-    printf "%s\n" "$*" >&2;
-}
-
 die()
 {
     BASE=$(basename "$0")
@@ -61,6 +56,42 @@ attach()
         exit 1
     fi
 
+    # helper funcs
+    stringContains()
+    {
+        [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]
+    }
+
+    isAbsPath()
+    {
+        path="$1"
+        pathStart=${path:0:1}
+
+        if [ "$pathStart" = '/' ]; then
+            return 0
+        else
+            return 1
+        fi
+    }
+
+    # test that the db path is relative
+    if isAbsPath "$db"; then
+        printErr "please use a relative path to the database"
+        exit 1
+    fi
+
+    # test that the db file exists
+    if [ ! -f "$repo/$db" ]; then
+        printErr "'$db' doesn't exist"
+        exit 1
+    fi
+
+    # test that we've got a sqlite3 database
+    if  ! stringContains "SQLite format 3" "$(head -c 15 < "$db")"; then
+        echo "'$db' is not sqlite database" >&2
+        exit 1
+    fi
+
     # add diff section
     git config diff.sqlite.binary "true"
     git config diff.sqlite.command "git-sqlite-diff"
@@ -76,11 +107,6 @@ attach()
     attributes="$db diff=sqlite merge=sqlite"
 
     touch "$repo/.gitattributes"
-
-    stringContains()
-    {
-        [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]
-    }
 
     if ! stringContains "$attributes" "$(cat "$repo/.gitattributes")"; then
         echo "$attributes" >> "$repo/.gitattributes"
