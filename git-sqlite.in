@@ -1,9 +1,14 @@
 #!/bin/bash
 
+printErr()
+{
+    printf "%s\n" "$*" >&2;
+}
+
 die()
 {
     BASE=$(basename "$0")
-    echo "$BASE: error: $@" >&2
+    printErr "$BASE: error: $@"
     exit 1
 }
 
@@ -19,9 +24,12 @@ show_help_and_exit()
     BASE=$(basename "$1")
     echo "@PACKAGE_NAME@ - @summary@
 
-Usage: $BASE [OPTIONS] FILE ...
+Usage: $BASE [OPTIONS] <COMMAND> DATABASE
 
-FILE - sqlite3 database
+COMMAND - one of 'init' or 'attach'
+    init - initialize the database
+    attach - attach the config
+DATABASE - sqlite3 database
 
 Options:
     -h        = This help screen.
@@ -34,6 +42,25 @@ bug-reports/questions: @PACKAGE_BUGREPORT@
 "
 
     exit
+}
+
+init()
+{
+    echo
+}
+
+attach()
+{
+    repo="$(pwd)"
+
+    # test if theres a .git directory
+    if [ ! -d "$repo/.git" ]
+    then
+        printErr "'$repo' isn't the parent directory of a git repository"
+        exit 1
+    fi
+
+    printErr "$repo"
 }
 
 # Default values for parameters
@@ -55,4 +82,16 @@ shift $(($OPTIND - 1))
 # Validate parameters
 test -n "$show_help" && show_help_and_exit
 test -n "$show_version" && show_version_and_exit
-test -z "$1" && die "missing database. See -h for help"
+test -z "$1" && die "missing command. See -h for help"
+test -z "$2" && die "missing database. See -h for help"
+
+# Set inputs
+cmd="$1"
+db="$2"
+
+# run the command
+case $cmd in
+    "init")   init;;
+    "attach") attach;;
+    *)      die "unknown command. See -h for help"
+esac

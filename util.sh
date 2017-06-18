@@ -1,10 +1,5 @@
 #!/bin/sh
 
-printErr()
-{
-    printf "%s\n" "$*" >&2;
-}
-
 diffDb()
 {
     # NOTE: sqldiff currently can't perform diffs
