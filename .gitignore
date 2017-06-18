@@ -9,3 +9,5 @@ configure
 install-sh
 missing
 git-sqlite
+git-sqlite-diff
+git-sqlite-merge
