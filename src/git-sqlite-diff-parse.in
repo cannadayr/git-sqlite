@@ -5,19 +5,18 @@ use warnings;
 
 my $diff = <>;
 
-#print "\n\n$diff\n\n";
+print "\n\n$diff\n\n";
 my @matches = $diff =~ m/
     ^\ UPDATE\ (\w+)\ SET\s+
-    ^[-](\w+)='(.*?)'\s+
-    ^[+]\w+='(.*?)'\s+
-    ^\s\sWHERE\sid='(.*?)';
+    ^[-](\w+)='(.*?)'\s+WHERE\sid='(.*?)'\s+
+    ^[+]\w+='(.*?)'\s+WHERE\sid='.*?'\s+
     /xmg;
 
 my $tbl = $1;
 my $column = $2;
 my $vol1 = $3;
-my $vol2 = $4;
-my $id = $5;
+my $id = $4;
+my $vol2 = $5;
 
 my $query = "update $tbl set $column = '<<<$vol1===$vol2>>>' where id='$id';";
 my $select = "select $column from $tbl where id='$id';";
