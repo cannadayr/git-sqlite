@@ -29,7 +29,7 @@ remote="$4"
 marker="$5"
 placeholder="$6"
 
-ancestor2remoteDiff=$(diffDb "$sqldiff" "$ancestor" "$remote")
+ancestor2remoteDiff=$(diffDb "$ancestor" "$remote")
 printErr $ancestor2remoteDiff
 sqlite3 "$local" "$ancestor2remoteDiff"
 

@@ -69,7 +69,7 @@ perm="$4"
 #printErr "$(sqlite3 "$toDb" ".dump")"
 
 #todo #fixme - this echos a newline if there's no diff
-diff="$(diffDb "$sqldiff" "$fromDb" "$toDb")"
+diff="$(diffDb "$fromDb" "$toDb")"
 if [ -n "$diff" ]; then
 
     # display a bold diff header
