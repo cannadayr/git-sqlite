@@ -4,6 +4,8 @@ bin_SCRIPTS = \
     git-sqlite-merge
 
 utildir = $(datadir)/git-sqlite
-util_DATA = util.sh
+util_DATA = \
+	util.sh \
+	schema.sql
 
 CLEANFILES = $(bin_SCRIPTS)

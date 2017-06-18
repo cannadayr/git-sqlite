@@ -5,6 +5,23 @@ printErr()
     printf "%s\n" "$*" >&2;
 }
 
+stringContains()
+{
+    [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]
+}
+
+isAbsPath()
+{
+    path="$1"
+    pathStart=${path:0:1}
+
+    if [ "$pathStart" = '/' ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 diffDb()
 {
     # NOTE: sqldiff currently can't perform diffs

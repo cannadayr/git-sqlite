@@ -44,16 +44,8 @@ bug-reports/questions: @PACKAGE_BUGREPORT@
     exit
 }
 
-init()
+prjCheck()
 {
-    echo
-}
-
-attach()
-{
-    repo="$(pwd)"
-    db="$1"
-
     # test if theres a .git directory
     if [ ! -d "$repo/.git" ]
     then
@@ -61,29 +53,29 @@ attach()
         exit 1
     fi
 
-    # helper funcs
-    stringContains()
-    {
-        [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]
-    }
-
-    isAbsPath()
-    {
-        path="$1"
-        pathStart=${path:0:1}
-
-        if [ "$pathStart" = '/' ]; then
-            return 0
-        else
-            return 1
-        fi
-    }
-
     # test that the db path is relative
     if isAbsPath "$db"; then
         printErr "please use a relative path to the database"
         exit 1
     fi
+}
+
+init()
+{
+    repo="$(pwd)"
+    db="$1"
+
+    prjCheck
+
+    sqlite3 "$db" < "$pkgdatadir/schema.sql"
+}
+
+attach()
+{
+    repo="$(pwd)"
+    db="$1"
+
+    prjCheck
 
     # test that the db file exists
     if [ ! -f "$repo/$db" ]; then
