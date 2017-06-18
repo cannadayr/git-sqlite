@@ -19,5 +19,7 @@ AC_SUBST([summary])
 
 # include src files
 AC_CONFIG_FILES([Makefile
-                 git-sqlite:git-sqlite.in])
+                 git-sqlite:git-sqlite.in
+                 git-sqlite-diff:git-sqlite-diff.in
+                 git-sqlite-merge:git-sqlite-merge.in])
 AC_OUTPUT
