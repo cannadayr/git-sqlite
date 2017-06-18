@@ -67,6 +67,12 @@ init()
 
     prjCheck
 
+    # test that the db file doesn't exist
+    if [ -f "$repo/$db" ]; then
+        printErr "'$db' exists, refusing to create"
+        exit 1
+    fi
+
     sqlite3 "$db" < "$pkgdatadir/schema.sql"
 }
 
