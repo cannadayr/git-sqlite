@@ -35,9 +35,8 @@ getFirstTmpFileIdx()
 }
 
 #printErr "$@"
-sqldiff="$1"
-toDbCandidate1="$3"
-toDbCandidate2="$6"
+toDbCandidate1="$2"
+toDbCandidate2="$5"
 #printErr "toDbCandidate1 = $toDbCandidate1"
 #printErr "toDbCandidate2 = $toDbCandidate2"
 
@@ -48,20 +47,20 @@ tempFileIdx="$(getFirstTmpFileIdx "$toDbCandidate1" "$toDbCandidate2")"
 #printErr "tempFileIdx $tempFileIdx"
 
 if [ $tempFileIdx = 0 ]; then
-    fromDb="$3"
-    toDb="$6"
+    fromDb="$2"
+    toDb="$5"
 elif [ $tempFileIdx = 1 ]; then
     fromDb="$toDbCandidate1"
-    toDb="$2"
+    toDb="$1"
 elif [ $tempFileIdx = 2 ]; then
     fromDb="$toDbCandidate2"
-    toDb="$2"
+    toDb="$1"
 else
     printErr 'ERROR: tmpDb not set to either $2 or $5'
 fi
 
-sha="$3"
-perm="$4"
+sha="$2"
+perm="$3"
 
 #printErr "fromDb $fromDb"
 #printErr "$(sqlite3 "$fromDb" ".dump")"

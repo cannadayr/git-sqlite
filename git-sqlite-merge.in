@@ -5,27 +5,26 @@ pkgdatadir="@datarootdir@/@PACKAGE@"  # e.g. /usr/local/share/PACKAGE/
 
 . "$pkgdatadir/util.sh"
 
-sqldiff="$1"
-ancestor="$2"
-local="$3"
-remote="$4"
-marker="$5"
-placeholder="$6"
+ancestor="$1"
+local="$2"
+remote="$3"
+marker="$4"
+placeholder="$5"
 
 #printErr "local=$local"
 #printErr "remote=$remote"
 
 # get the diffs from the common ancestor to our states
-ancestor2localDiff="$(diffDb "$sqldiff" "$ancestor" "$local")"
-ancestor2remoteDiff="$(diffDb "$sqldiff" "$ancestor" "$remote")"
+ancestor2localDiff="$(diffDb "$ancestor" "$local")"
+ancestor2remoteDiff="$(diffDb "$ancestor" "$remote")"
 
 # apply each diff to its counterpart
 sqlite3 "$local" "$ancestor2remoteDiff"
 sqlite3 "$remote" "$ancestor2localDiff"
 
 # diff our db's again
-local2remote="$(diffDb "$sqldiff" "$local" "$remote" "--no-transaction")"
-remote2local="$(diffDb "$sqldiff" "$remote" "$local" "--no-transaction")"
+local2remote="$(diffDb "$local" "$remote" "--no-transaction")"
+remote2local="$(diffDb "$remote" "$local" "--no-transaction")"
 
 # get tmp files
 local2remoteTmp="$(mktemp)"
