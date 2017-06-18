@@ -5,8 +5,13 @@ bin_SCRIPTS = \
     git-sqlite-merge
 
 utildir = $(datadir)/git-sqlite
-util_DATA = \
+
+# files to install in /usr/local/share/PACKAGE/
+utilities = \
 	util.sh \
 	schema.sql
+
+dist_util_DATA = $(utilities)
+EXTRA_DIST = $(utilities)
 
 CLEANFILES = $(bin_SCRIPTS)
