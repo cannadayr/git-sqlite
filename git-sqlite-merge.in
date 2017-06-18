@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-trunk="$(dirname $0)"
+prefix="@prefix@"
+pkgdatadir="@datarootdir@/@PACKAGE@"  # e.g. /usr/local/share/PACKAGE/
 
-. $trunk/util.sh
+. "$pkgdatadir/util.sh"
 
 sqldiff="$1"
 ancestor="$2"

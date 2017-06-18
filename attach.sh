@@ -8,11 +8,6 @@ trunk="$(dirname "$0")"
 sqldiff="$3"
 schema="$4"
 
-stringContains()
-{
-    [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]
-}
-
 rmTrailingSlash()
 {
     echo "$1" | sed 's/\/*$//g'
@@ -41,37 +36,6 @@ fi
 
 # rm trailing slash from 'repo' if it has one
 repoPath=$(rmTrailingSlash "$repo")
-
-# test if the repo and repo's .git are directories
-if [ ! -d "$repoPath" ] \
-    || [ ! -d "$repoPath/.git" ]
-then
-    echo "'$repoPath' isn't a git repository" >&2
-    exit 1
-fi
-
-# test if we've got sqlite
-if ! [ -x "$(command -v sqlite3)" ]; then
-    echo 'sqlite is not installed.' >&2
-    exit 1
-fi
-
-# test if we've got sql-diff
-
-# if sqldiff is given as a relative path,
-# lets assume its relative inside the repo
-if isAbsPath "$sqldiff"; then
-    sqldiffPath="$sqldiff"
-    sqldiffTestPath="$sqldiffPath"
-else
-    sqldiffPath="./$sqldiff"
-    sqldiffTestPath="$repoPath/$sqldiff"
-fi
-
-if ! [ -x "$sqldiffTestPath" ]; then
-    echo 'sqldiff is not found' >&2
-    exit 1
-fi
 
 # test if the sqlite db is a file
 if ! [ -f "$repoPath/$db" ]; then
@@ -121,21 +85,3 @@ fi
 
 # modify local .git/config
 cd $repo &&
-# add diff section
-git config diff.sqlite.binary "true"
-git config diff.sqlite.command "./.git-sqlite/sqlite-diff $sqldiffPath"
-
-# add merge section
-git config merge.sqlite.name "sqlite merge"
-git config merge.sqlite.driver "./.git-sqlite/sqlite-merge $sqldiffPath %O %A %B %L %P"
-
-# add git show-sql alias
-git config alias.show-sql "show --ext-diff"
-
-# modify local .gitattributes
-attributes="$db diff=sqlite merge=sqlite"
-
-touch "$repo/.gitattributes"
-if ! stringContains "$attributes" "$(cat "$repo/.gitattributes")"; then
-    echo "$attributes" >> "$repo/.gitattributes"
-fi

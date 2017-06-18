@@ -1,0 +1,147 @@
+#!/bin/bash
+
+die()
+{
+    BASE=$(basename "$0")
+    printErr "$BASE: error: $@"
+    exit 1
+}
+
+show_version_and_exit()
+{
+    echo "@PACKAGE_NAME@ - @VERSION@"
+    echo "License: MIT" #TODO add license
+    exit 0
+}
+
+show_help_and_exit()
+{
+    BASE=$(basename "$1")
+    echo "@PACKAGE_NAME@ - @summary@
+
+Usage: $BASE [OPTIONS] <COMMAND> DATABASE
+
+COMMAND - one of 'init' or 'attach'
+    init - initialize the database
+    attach - attach the config
+DATABASE - sqlite3 database
+
+Options:
+    -h        = This help screen.
+    -v        = be verbose
+    -V        = print version.
+
+Website: @PACKAGE_URL@
+bug-reports/questions: @PACKAGE_BUGREPORT@
+
+"
+
+    exit
+}
+
+init()
+{
+    echo
+}
+
+attach()
+{
+    repo="$(pwd)"
+    db="$1"
+
+    # test if theres a .git directory
+    if [ ! -d "$repo/.git" ]
+    then
+        printErr "'$repo' isn't the parent directory of a git repository"
+        exit 1
+    fi
+
+    # helper funcs
+    stringContains()
+    {
+        [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]
+    }
+
+    isAbsPath()
+    {
+        path="$1"
+        pathStart=${path:0:1}
+
+        if [ "$pathStart" = '/' ]; then
+            return 0
+        else
+            return 1
+        fi
+    }
+
+    # test that the db path is relative
+    if isAbsPath "$db"; then
+        printErr "please use a relative path to the database"
+        exit 1
+    fi
+
+    # test that the db file exists
+    if [ ! -f "$repo/$db" ]; then
+        printErr "'$db' doesn't exist"
+        exit 1
+    fi
+
+    # test that we've got a sqlite3 database
+    if  ! stringContains "SQLite format 3" "$(head -c 15 < "$db")"; then
+        echo "'$db' is not sqlite database" >&2
+        exit 1
+    fi
+
+    # add diff section
+    git config diff.sqlite.binary "true"
+    git config diff.sqlite.command "git-sqlite-diff"
+
+    # add merge section
+    git config merge.sqlite.name "sqlite merge"
+    git config merge.sqlite.driver "git-sqlite-merge %O %A %B %L %P"
+
+    # add git show-sql alias
+    git config alias.show-sql "show --ext-diff"
+
+    # modify local .gitattributes
+    attributes="$db diff=sqlite merge=sqlite"
+
+    touch "$repo/.gitattributes"
+
+    if ! stringContains "$attributes" "$(cat "$repo/.gitattributes")"; then
+        echo "$attributes" >> "$repo/.gitattributes"
+    fi
+}
+
+# Default values for parameters
+show_usage=
+show_version=
+verbose=
+# Parse parameters
+while getopts Vvh param
+do
+    case $param in
+    h)   show_help=1;;
+    v)   verbose=1;;
+    V)   show_version=1;;
+    ?)   die "unknown command line option";;
+    esac
+done
+shift $(($OPTIND - 1))
+
+# Validate parameters
+test -n "$show_help" && show_help_and_exit
+test -n "$show_version" && show_version_and_exit
+test -z "$1" && die "missing command. See -h for help"
+test -z "$2" && die "missing database. See -h for help"
+
+# Set inputs
+cmd="$1"
+db="$2"
+
+# run the command
+case $cmd in
+    "init")   init "$db";;
+    "attach") attach "$db";;
+    *)      die "unknown command. See -h for help"
+esac

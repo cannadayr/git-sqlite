@@ -16,9 +16,8 @@ diffDb()
     #   this seems to detect changes to the sqlite_master tbl
     #   and can be applied using the 'session' extension
     # see: https://sqlite.org/sessionintro.html
-    sqldiff="$1"
-    localDb="$2"
-    tmpDb="$3"
+    localDb="$1"
+    tmpDb="$2"
     noTransaction="$4"
 
     transactionStr=""
@@ -26,6 +25,6 @@ diffDb()
         transactionStr="--transaction"
     fi
 
-    $sqldiff $transactionStr "$localDb" "$tmpDb"
+    sqldiff $transactionStr "$localDb" "$tmpDb"
 }
 
