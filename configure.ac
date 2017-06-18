@@ -1,4 +1,4 @@
-AC_INIT([cprjexample], [alpha], [changeme]@cprjexample.com)
+AC_INIT([git-db], [alpha], []@local.net)
 AM_INIT_AUTOMAKE([foreign])
 
 ## check for bash
@@ -14,7 +14,5 @@ AC_SUBST([summary])
 
 ## include src files
 AC_CONFIG_FILES([Makefile
-                 run.sh:run.sh.in],
-                [chmod +x run.sh])
+                 git-db:git-db.in])
 AC_OUTPUT
-

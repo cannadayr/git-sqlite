@@ -1,0 +1,58 @@
+#!/bin/bash
+
+die()
+{
+    BASE=$(basename "$0")
+    echo "$BASE: error: $@" >&2
+    exit 1
+}
+
+show_version_and_exit()
+{
+    echo "@PACKAGE_NAME@ - @VERSION@"
+    echo "License: MIT" #TODO add license
+    exit 0
+}
+
+show_help_and_exit()
+{
+    BASE=$(basename "$1")
+    echo "@PACKAGE_NAME@ - @summary@
+
+Usage: $BASE [OPTIONS] FILE ...
+
+FILE - sqlite3 database
+
+Options:
+    -h        = This help screen.
+    -v        = be verbose
+    -V        = print version.
+
+Website: @PACKAGE_URL@
+bug-reports/questions: @PACKAGE_BUGREPORT@
+
+"
+
+    exit
+}
+
+# Default values for parameters
+show_usage=
+show_version=
+verbose=
+# Parse parameters
+while getopts Vvh param
+do
+    case $param in
+    h)   show_help=1;;
+    v)   verbose=1;;
+    V)   show_version=1;;
+    ?)   die "unknown command line option";;
+    esac
+done
+shift $(($OPTIND - 1))
+
+# Validate parameters
+test -n "$show_help" && show_help_and_exit
+test -n "$show_version" && show_version_and_exit
+test -z "$1" && die "missing database. See -h for help"

@@ -1,2 +1,2 @@
-bin_SCRIPTS = run.sh
+bin_SCRIPTS = git-db
 CLEANFILES = $(bin_SCRIPTS)
