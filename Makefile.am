@@ -1,2 +1,2 @@
-bin_SCRIPTS = git-db
+bin_SCRIPTS = git-sqlite
 CLEANFILES = $(bin_SCRIPTS)

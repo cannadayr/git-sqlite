@@ -8,4 +8,4 @@ config.status
 configure
 install-sh
 missing
-git-db
+git-sqlite
