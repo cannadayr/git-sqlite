@@ -1,12 +1,13 @@
+# scripts to install
 bin_SCRIPTS = \
     git-sqlite \
     git-sqlite-diff \
 	git-sqlite-diff-parse \
     git-sqlite-merge
 
+# files to install in /usr/local/share/PACKAGE/
 utildir = $(datadir)/git-sqlite
 
-# files to install in /usr/local/share/PACKAGE/
 utilities = \
 	util.sh \
 	schema.sql
@@ -14,4 +15,5 @@ utilities = \
 dist_util_DATA = $(utilities)
 EXTRA_DIST = $(utilities)
 
+# clean files
 CLEANFILES = $(bin_SCRIPTS)
