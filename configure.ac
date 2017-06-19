@@ -17,6 +17,10 @@ test "$sqldiff" == "no" && AC_MSG_ERROR([Required program 'sqldiff' not found.])
 AC_CHECK_PROG(git,[git],[git],[no])
 test "$git" == "no" && AC_MSG_ERROR([Required program 'git' not found.])
 
+# check for perl
+AC_CHECK_PROG(perl,[perl],[perl],[no])
+test "$perl" == "no" && AC_MSG_ERROR([Required program 'perl' not found.])
+
 # uuid_v4
 uuidv4="m4_normalize(
     lower(hex(randomblob(4))) \
