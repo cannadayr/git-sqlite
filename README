@@ -1,26 +1,35 @@
 Dependencies:
-    - sqlite3 (sqldiff)
+    - sqlite3
+    - sqldiff
+    - bash
+    - perl
+    - git
 
-TODO:
-    - trigger merge conflict when 2 rows with same id get updated
-    - detecting diffed triggers & views (maybe should be handled in sqldiff upstream)
-    - new columns from alter table dont have explicit types
-    - uuid version 1 style
+sqldiff is included in the sqlite source code,
+it needs to be compiled from the sqlite source code,
+and installed in the user path.
 
-GETTING STARTED
-===============
+A basic example is below, see `INSTALLING SQLDIFF`
 
-New Repository (debian linux)
------------------------------
-mkdir -p new-repo/modules
-git clone bomb.sh:/var/git/git-sqlite.git new-repo/.git-sqlite
-cd new-repo/modules
+INSTALLING SQLDIFF
+==================
+
+```
 wget https://www.sqlite.org/src/tarball/sqlite.tar.gz?r=release
 tar xzf sqlite.tar.gz?r=release
 cd sqlite
 ./configure
 make sqldiff
-cd ../../
-git init
-./.git-sqlite/attach.sh . sqlite.db modules/sqlite/sqldiff ./.git-sqlite/schema.sql
+sudo install sqldiff /usr/local/bin/
+```
+
+See https://www.sqlite.org/download.html for more information
+
+TODO
+====
+    - detect when two or more fields change on one record during git conflict
+    - detect when two or more records change during git conflict
+    - detecting diffed triggers & views (maybe should be handled in sqldiff upstream)
+    - new columns from alter table dont have explicit types
+    - uuid version 1 style
 
