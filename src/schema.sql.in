@@ -51,7 +51,6 @@ where
     and <where_clause about entities or tags>;
 
 
-
 get all the entities that DON'T have any tags:
 
 select * from entity e
@@ -67,11 +66,12 @@ insert into tag2entity (tag_id, entity_id)
 values ( (select id from tag where name='<name of tag>'),
          (select id from entity where name='<name of entity>') )
 
+
 improving our "UUIDs":
 
 select replace(julianday(),".","");
 select substr('0000000000000000' || replace(julianday(),".",""), -16, 16);
- select substr(replace(julianday(),".","") || '0000000000000000', 1, 16);
+select substr(replace(julianday(),".","") || '0000000000000000', 1, 16);
 select lower(printf('%08X', strftime("%s") || substr(strftime("%f"), 4, 6)));
 
 */
