@@ -22,18 +22,18 @@ AC_CHECK_PROG(perl,[perl],[perl],[no])
 test "$perl" == "no" && AC_MSG_ERROR([Required program 'perl' not found.])
 
 # uuid_v4
-uuidv4="m4_normalize(
-    lower(hex(randomblob(4))) \
-        || '-' \
-        || lower(hex(randomblob(2))) \
-        || '-4' \
-        || substr(lower(hex(randomblob(2))),2) \
-        || '-' \
-        || substr('89ab',abs(random()) % 4 + 1, 1) \
-        || substr(lower(hex(randomblob(2))),2) \
-        || '-' \
-        || lower(hex(randomblob(6))) \
-)"
+uuidv4=m4_normalize("
+    lower(hex(randomblob(4)))
+        || '-'
+        || lower(hex(randomblob(2)))
+        || '-4'
+        || substr(lower(hex(randomblob(2))),2)
+        || '-'
+        || substr('89ab',abs(random()) % 4 + 1, 1)
+        || substr(lower(hex(randomblob(2))),2)
+        || '-'
+        || lower(hex(randomblob(6)))
+")
 AC_SUBST([uuidv4])
 
 # Auto-generated warnings.
