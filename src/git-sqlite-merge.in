@@ -39,15 +39,19 @@ echo "$local2remote" > "$local2remoteTmp"
 echo "$remote2local" > "$remote2localTmp"
 
 # word diff the tmp files
-gitDiff="$(git diff --no-index --word-diff=porcelain --word-diff-regex="\w+='.*?'" "$local2remoteTmp" "$remote2localTmp")"
+gitDiff="$(git diff --no-index --word-diff "$local2remoteTmp" "$remote2localTmp")"
+# TODO apply comment to headers
+# go back to using word-diff regex
+# maybe use a pre-commit hook to see if the conflict file exists
 
 # throw a conflict warning if theres a diff still
 if [ -n "$gitDiff" ]; then
     #printErr "$gitDiff"
+    echo "$gitDiff" > CONFLICT.sql
 
-    query="$(echo "$gitDiff" | git-sqlite-diff-parse )"
+    #query="$(echo "$gitDiff" | git-sqlite-diff-parse )"
     #printErr "$query"
-    sqlite3 "$local" "$query"
+    #sqlite3 "$local" "$query"
     #TODO update the conflicting field with markers and content
     exit 1
 fi
