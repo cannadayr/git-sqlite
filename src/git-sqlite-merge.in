@@ -13,10 +13,11 @@ remote="$3"
 marker="$4"
 placeholder="$5"
 
-#printErr "marker='$marker'"
-#printErr "placeholder='$placeholder'"
+#printErr "ancestor=$ancestor"
 #printErr "local=$local"
 #printErr "remote=$remote"
+#printErr "marker=$marker"
+#printErr "placeholder=$placeholder"
 
 # get the diffs from the common ancestor to our states
 ancestor2localDiff="$(diffDb "$ancestor" "$local")"
