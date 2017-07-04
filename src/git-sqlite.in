@@ -106,7 +106,10 @@ attach()
     git config merge.sqlite.driver "git-sqlite-merge %O %A %B %L %P"
 
     # add git show-sql alias
-    git config alias.show-sql "show --ext-diff"
+    git config alias.show-sql "show --ext-diff -m"
+
+    # add git apply-sql alias
+    git config alias.apply-sql "!sqlite3 ${db} < ${db}-.merge_file.sql && rm ${db}-.merge_file.sql"
 
     # modify local .gitattributes
     attributes="$db diff=sqlite merge=sqlite"
