@@ -109,7 +109,7 @@ attach()
     git config alias.show-sql "show --ext-diff -m"
 
     # add git apply-sql alias
-    git config alias.apply-sql "!sqlite3 ${db} < ${db}-.merge_file.sql && rm ${db}-.merge_file.sql"
+    git config alias.apply-sql "!sqlite3 ${db} < ${db}-.merge_file.sql && rm ${db}-.merge_file.sql && git add ${db}"
 
     # modify local .gitattributes
     attributes="$db diff=sqlite merge=sqlite"
