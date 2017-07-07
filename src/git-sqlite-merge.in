@@ -14,7 +14,7 @@ marker="$4"
 placeholder="$5"
 
 #printErr "ancestor=$ancestor"
-#printErr "local=$local"
+#printErr "localDb=$localDb"
 #printErr "remote=$remote"
 #printErr "marker=$marker"
 #printErr "placeholder=$placeholder"
@@ -40,20 +40,18 @@ echo "$local2remote" > "$local2remoteTmp"
 echo "$remote2local" > "$remote2localTmp"
 
 # word diff the tmp files
-gitDiff="$(git diff --no-index --word-diff=porcelain --word-diff-regex="\w+='.*?'" "$local2remoteTmp" "$remote2localTmp")"
+gitDiff="$(git diff --no-index "$local2remoteTmp" "$remote2localTmp")"
 
-echo "gitDiff = $gitDiff"
+printErr "gitDiff = $gitDiff"
 
 formatGitDiff()
 {
-    # diff --git a/tmp/tmp.MaeEcPpJNR b/tmp/tmp.gO3q9RXJhN
-    # index 06ad0b0..21dc3f2 100644
-    # --- a/tmp/tmp.MaeEcPpJNR
-    # +++ b/tmp/tmp.gO3q9RXJhN
-    # @@ -1,3 +1,3 @@
+    # comment out header lines and diff ranges
 
     awk -v prefix="-- " '{ if( /^diff/ || /^index/ || /^@@/ || /^\+\+\+/ || /^---/ ) { print prefix $0 } else print $0 }' \
-        | grep -v "^~"
+        | awk -v localMark="/*<LOCAL>*/" -v eol="/*</LOCAL>*/" '{ if ( /^-[^-]/ ) { print localMark substr($0,2) eol } else print $0 }' \
+        | awk -v remoteMark="/*<REMOTE>*/ " -v eol="/*</REMOTE>*/" '{ if ( /^\+[^+]/ ) { print remoteMark substr($0,2) } else print $0 }' \
+        | grep -v "^~$"
 
 }
 
