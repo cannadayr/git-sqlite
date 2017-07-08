@@ -8,7 +8,7 @@ property on the table, and using a unique uuid as the primary key.
 
 See src/schema.sql after building the project for an example.
 
-## 1 MINUTE USAGE GUIDE
+## USAGE GUIDE
 create a new database using the git-sqlite example schema:
 ```
 git-sqlite init newdatabase.db
