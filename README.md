@@ -1,5 +1,14 @@
-1 MINUTE USAGE GUIDE
-====================
+## SYNOPSIS
+git-sqlite is a collection of shell scripts that allows a sqlite database
+to be tracked using the git version control system.
+
+It can be used on an existing database, however a few modifications
+to the schema may be necessary. Namely, the 'without rowid'
+property on the table, and using a unique uuid as the primary key.
+
+See src/schema.sql after building the project for an example.
+
+## 1 MINUTE USAGE GUIDE
 create a new database using the git-sqlite example schema:
 ```
 git-sqlite init newdatabase.db
@@ -20,13 +29,12 @@ resolve a merge conflict (after manually editing the merge_file)
 git apply-sql
 ```
 
-INSTALLING GIT-SQLITE
-=====================
+## INSTALLING GIT-SQLITE
 Dependencies:
-    - sqlite3
-    - sqldiff
-    - bash
-    - git
+..+ sqlite3
+..+ sqldiff
+..+ bash
+..+ git
 
 sqldiff is included in the sqlite source code,
 it needs to be compiled from the sqlite source code,
@@ -47,8 +55,7 @@ If you are installing from a release, do this:
 sudo make install
 ```
 
-INSTALLING SQLDIFF
-==================
+## INSTALLING SQLDIFF
 
 ```
 wget https://www.sqlite.org/src/tarball/sqlite.tar.gz?r=release
@@ -61,9 +68,13 @@ sudo install sqldiff /usr/local/bin/
 
 See https://www.sqlite.org/download.html for more information
 
-ISSUES
-======
-    - detecting diffed triggers & views (maybe should be handled in sqldiff upstream)
-    - new columns from alter table dont have explicit types
-    - uuid version 1 style
+## KNOWN ISSUES
+..+ can't detect diffed triggers and views (should be resolved upstream in sqldiff)
+..+ new columns from alter table dont have explicit types
+..+ merge conflicts don't interleave
 
+## TODOS
+..+ uuid version 1 style
+
+## NOTES
+    - `git gc` may need to be run periodically
