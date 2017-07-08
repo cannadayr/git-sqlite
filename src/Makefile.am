@@ -2,7 +2,6 @@
 bin_SCRIPTS = \
     git-sqlite \
     git-sqlite-diff \
-	git-sqlite-diff-parse \
     git-sqlite-merge
 
 # files to install in /usr/local/share/PACKAGE/

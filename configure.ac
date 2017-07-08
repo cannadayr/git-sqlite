@@ -17,9 +17,6 @@ test "$sqldiff" == "no" && AC_MSG_ERROR([Required program 'sqldiff' not found.])
 AC_CHECK_PROG(git,[git],[git],[no])
 test "$git" == "no" && AC_MSG_ERROR([Required program 'git' not found.])
 
-# check for perl
-#AC_CHECK_PROG(perl,[perl],[perl],[no])
-#test "$perl" == "no" && AC_MSG_ERROR([Required program 'perl' not found.])
 
 # summary
 summary="git-sqlite: a diff & merge driver for sqlite"
@@ -54,6 +51,5 @@ AC_CONFIG_FILES([Makefile
                  src/schema.sql:src/schema.sql.in
                  src/git-sqlite:src/git-sqlite.in
                  src/git-sqlite-diff:src/git-sqlite-diff.in
-                 src/git-sqlite-diff-parse:src/git-sqlite-diff-parse.in
                  src/git-sqlite-merge:src/git-sqlite-merge.in])
 AC_OUTPUT
