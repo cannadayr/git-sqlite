@@ -18,8 +18,12 @@ AC_CHECK_PROG(git,[git],[git],[no])
 test "$git" == "no" && AC_MSG_ERROR([Required program 'git' not found.])
 
 # check for perl
-AC_CHECK_PROG(perl,[perl],[perl],[no])
-test "$perl" == "no" && AC_MSG_ERROR([Required program 'perl' not found.])
+#AC_CHECK_PROG(perl,[perl],[perl],[no])
+#test "$perl" == "no" && AC_MSG_ERROR([Required program 'perl' not found.])
+
+# summary
+summary="git-sqlite: a diff & merge driver for sqlite"
+AC_SUBST([summary])
 
 # uuid_v4
 uuidv4=m4_normalize("

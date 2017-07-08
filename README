@@ -2,7 +2,6 @@ Dependencies:
     - sqlite3
     - sqldiff
     - bash
-    - perl
     - git
 
 sqldiff is included in the sqlite source code,
