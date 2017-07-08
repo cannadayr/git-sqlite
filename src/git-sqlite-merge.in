@@ -23,6 +23,10 @@ placeholder="$5"
 ancestor2localDiff="$(diffDb "$ancestor" "$localDb")"
 ancestor2remoteDiff="$(diffDb "$ancestor" "$remote")"
 
+# backup the localDb before merging
+backupDb="${localDb}.bak"
+cp "$localDb" "$backupDb"
+
 # apply each diff to its counterpart
 sqlite3 "$localDb" "$ancestor2remoteDiff"
 sqlite3 "$remote" "$ancestor2localDiff"
@@ -42,7 +46,7 @@ echo "$remote2local" > "$remote2localTmp"
 # word diff the tmp files
 gitDiff="$(git diff --no-index "$local2remoteTmp" "$remote2localTmp")"
 
-printErr "gitDiff = $gitDiff"
+#printErr "gitDiff = $gitDiff"
 
 formatGitDiff()
 {
@@ -50,7 +54,7 @@ formatGitDiff()
 
     awk -v prefix="-- " '{ if( /^diff/ || /^index/ || /^@@/ || /^\+\+\+/ || /^---/ ) { print prefix $0 } else print $0 }' \
         | awk -v localMark="/*<LOCAL>*/" -v eol="/*</LOCAL>*/" '{ if ( /^-[^-]/ ) { print localMark substr($0,2) eol } else print $0 }' \
-        | awk -v remoteMark="/*<REMOTE>*/ " -v eol="/*</REMOTE>*/" '{ if ( /^\+[^+]/ ) { print remoteMark substr($0,2) } else print $0 }' \
+        | awk -v remoteMark="/*<REMOTE>*/ " -v eol="/*</REMOTE>*/" '{ if ( /^\+[^+]/ ) { print remoteMark substr($0,2) eol } else print $0 }' \
         | grep -v "^~$"
 
 }
@@ -60,11 +64,14 @@ if [ -n "$gitDiff" ]; then
 
     # format the diff for sql consumption
     fmtGitDiff="$(echo "$gitDiff" | formatGitDiff )"
-    printErr "fmtGitDiff = $fmtGitDiff"
+    #printErr "fmtGitDiff = $fmtGitDiff"
 
     # echo it to an output file for manual editing
     conflictFile="${placeholder}-.merge_file.sql"
     echo "$fmtGitDiff" > "$conflictFile"
+
+    # restore the backup
+    mv "$backupDb" "$localDb"
 
     # exit the script
     exit 1
