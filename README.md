@@ -31,10 +31,10 @@ git apply-sql
 
 ## INSTALLING GIT-SQLITE
 Dependencies:
-..+ sqlite3
-..+ sqldiff
-..+ bash
-..+ git
+* sqlite3
+* sqldiff
+* bash
+* git
 
 sqldiff is included in the sqlite source code,
 it needs to be compiled from the sqlite source code,
@@ -69,12 +69,12 @@ sudo install sqldiff /usr/local/bin/
 See https://www.sqlite.org/download.html for more information
 
 ## KNOWN ISSUES
-..+ can't detect diffed triggers and views (should be resolved upstream in sqldiff)
-..+ new columns from alter table dont have explicit types
-..+ merge conflicts don't interleave
+* can't detect diffed triggers and views (should be resolved upstream in sqldiff)
+* new columns from alter table dont have explicit types
+* merge conflicts don't interleave
 
 ## TODOS
-..+ uuid version 1 style
+* uuid version 1 style
 
 ## NOTES
     - `git gc` may need to be run periodically
