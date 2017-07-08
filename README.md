@@ -5,7 +5,7 @@ create a new database using the git-sqlite example schema:
 git-sqlite init newdatabase.db
 ```
 
-attach the database to your repository:
+attach the database to your repository (has to be done for each repo):
 ```
 git-sqlite attach newdatabase.db
 ```
