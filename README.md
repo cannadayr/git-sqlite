@@ -3,8 +3,9 @@ git-sqlite is a collection of shell scripts that allows a sqlite database
 to be tracked using the git version control system.
 
 It can be used on an existing database, however a few modifications
-to the schema may be necessary. Namely, the 'without rowid'
-property on the table, and using a unique uuid as the primary key.
+to the schema may be necessary:
+* add the 'without rowid' property to tables
+* use a uuid as the table's primary key
 
 See src/schema.sql after building the project for an example.
 
@@ -75,6 +76,8 @@ See https://www.sqlite.org/download.html for more information
 
 ## TODOS
 * uuid version 1 style
+* cleanup diff headers to be closer to what git does
+* test cherry-picking
 
 ## NOTES
-    - `git gc` may need to be run periodically
+* `git gc` may need to be run periodically
