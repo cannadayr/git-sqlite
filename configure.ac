@@ -17,9 +17,8 @@ test "$sqldiff" == "no" && AC_MSG_ERROR([Required program 'sqldiff' not found.])
 AC_CHECK_PROG(git,[git],[git],[no])
 test "$git" == "no" && AC_MSG_ERROR([Required program 'git' not found.])
 
-
 # summary
-summary="git-sqlite: a diff & merge driver for sqlite"
+summary="a diff & merge driver for sqlite"
 AC_SUBST([summary])
 
 # uuid_v4
