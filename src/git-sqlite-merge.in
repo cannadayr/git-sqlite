@@ -43,7 +43,7 @@ remote2localTmp="$(mktemp)"
 echo "$local2remote" > "$local2remoteTmp"
 echo "$remote2local" > "$remote2localTmp"
 
-# word diff the tmp files
+# diff the tmp files
 gitDiff="$(git diff --no-index "$local2remoteTmp" "$remote2localTmp")"
 
 #printErr "gitDiff = $gitDiff"
@@ -76,6 +76,12 @@ if [ -n "$gitDiff" ]; then
     # exit the script
     exit 1
 
+fi
+
+# git seems to clean up the backup regardless,
+# but if its still here lets get rid of it
+if [ -e "$backup" ]; then
+    rm "$backup"
 fi
 
 # apply the diff

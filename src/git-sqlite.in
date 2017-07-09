@@ -9,24 +9,24 @@ pkgdatadir="@datarootdir@/@PACKAGE@"  # e.g. /usr/local/share/PACKAGE/
 
 die()
 {
-    BASE=$(basename "$0")
-    printErr "$BASE: error: $@"
+    local base="$(basename "$0")"
+    printErr "$base: error: $@"
     exit 1
 }
 
 show_version_and_exit()
 {
     echo "@PACKAGE_NAME@ - @VERSION@"
-    echo "License: MIT" #TODO add license
+    echo "License: MIT"
     exit 0
 }
 
 show_help_and_exit()
 {
-    BASE=$(basename "$1")
+    local base="$(basename "$1")"
     echo "@PACKAGE_NAME@ - @summary@
 
-Usage: $BASE [OPTIONS] <COMMAND> DATABASE
+Usage: $base [OPTIONS] <COMMAND> DATABASE
 
 COMMAND - one of 'init' or 'attach'
     init - initialize the database
@@ -35,7 +35,6 @@ DATABASE - sqlite3 database
 
 Options:
     -h        = This help screen.
-    -v        = be verbose
     -V        = print version.
 
 Website: @PACKAGE_URL@
@@ -48,6 +47,9 @@ bug-reports/questions: @PACKAGE_BUGREPORT@
 
 prjCheck()
 {
+    local repo="$1"
+    local db="$2"
+
     # test if theres a .git directory
     if [ ! -d "$repo/.git" ]
     then
@@ -64,10 +66,10 @@ prjCheck()
 
 init()
 {
-    repo="$(pwd)"
-    db="$1"
+    local repo="$(pwd)"
+    local db="$1"
 
-    prjCheck
+    prjCheck "$repo" "$db"
 
     # test that the db file doesn't exist
     if [ -f "$repo/$db" ]; then
@@ -75,15 +77,15 @@ init()
         exit 1
     fi
 
-    sqlite3 "$db" < "$pkgdatadir/schema.sql"
+    sqlite3 "$repo/$db" < "$pkgdatadir/schema.sql"
 }
 
 attach()
 {
-    repo="$(pwd)"
-    db="$1"
+    local repo="$(pwd)"
+    local db="$1"
 
-    prjCheck
+    prjCheck "$repo" "$db"
 
     # test that the db file exists
     if [ ! -f "$repo/$db" ]; then
@@ -92,7 +94,7 @@ attach()
     fi
 
     # test that we've got a sqlite3 database
-    if  ! stringContains "SQLite format 3" "$(head -c 15 < "$db")"; then
+    if  ! stringContains "SQLite format 3" "$(head -c 15 < "$repo/$db")"; then
         echo "'$db' is not sqlite database" >&2
         exit 1
     fi
@@ -125,12 +127,12 @@ attach()
 show_usage=
 show_version=
 verbose=
+
 # Parse parameters
 while getopts Vvh param
 do
     case $param in
     h)   show_help=1;;
-    v)   verbose=1;;
     V)   show_version=1;;
     ?)   die "unknown command line option";;
     esac

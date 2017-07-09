@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 printErr()
 {
@@ -12,8 +12,8 @@ stringContains()
 
 isAbsPath()
 {
-    path="$1"
-    pathStart=${path:0:1}
+    local path="$1"
+    local pathStart=${path:0:1}
 
     if [ "$pathStart" = '/' ]; then
         return 0
@@ -33,11 +33,11 @@ diffDb()
     #   this seems to detect changes to the sqlite_master tbl
     #   and can be applied using the 'session' extension
     # see: https://sqlite.org/sessionintro.html
-    localDb="$1"
-    tmpDb="$2"
-    noTransaction="$4"
+    local localDb="$1"
+    local tmpDb="$2"
+    local noTransaction="$4"
 
-    transactionStr=""
+    local transactionStr=""
     if [ -z "$noTransaction" ]; then
         transactionStr="--transaction"
     fi

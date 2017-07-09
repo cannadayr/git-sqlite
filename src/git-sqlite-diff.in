@@ -15,10 +15,10 @@ pkgdatadir="@datarootdir@/@PACKAGE@"  # e.g. /usr/local/share/PACKAGE/
 # even weirder, we sometimes have to swap the arguments (see below)
 getFirstTmpFileIdx()
 {
-    path1="$1"
-    path2="$2"
-    path1start=${path1:0:1}
-    path2start=${path2:0:1}
+    local path1="$1"
+    local path2="$2"
+    local path1start=${path1:0:1}
+    local path2start=${path2:0:1}
 
     # not actually looking in /tmp/ because MacOS stores its temp files elsewhere
     # just look for any absolute path
