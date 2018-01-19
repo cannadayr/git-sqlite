@@ -45,7 +45,7 @@ A basic example is below, see `INSTALLING SQLDIFF`
 
 If you are installing from the git src, do the following:
 ```
-./bootstrap
+./reconf
 ./configure
 sudo make install
 ```
