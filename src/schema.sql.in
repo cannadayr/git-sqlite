@@ -8,7 +8,7 @@ CREATE TABLE entity (
     txt text,
     time_added timestamp default current_timestamp,
     primary key(id)
-) WITHOUT ROWID;
+);
 
 CREATE TABLE tag2entity (
     "id" char(36) default (@uuidv4@),
@@ -16,7 +16,7 @@ CREATE TABLE tag2entity (
     tag_id char(36), -- id
     time_added timestamp default current_timestamp,
     primary key(id)
-) WITHOUT ROWID;
+);
 CREATE INDEX tag2entity__entity_id ON tag2entity(entity_id);
 CREATE INDEX tag2entity__tag_id ON tag2entity(tag_id);
 
@@ -26,7 +26,7 @@ CREATE TABLE tag (
     txt text,
     time_added timestamp default current_timestamp,
     primary key(id)
-) WITHOUT ROWID;
+);
 
 CREATE VIEW entity_tags AS
 
