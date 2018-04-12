@@ -42,6 +42,9 @@ diffDb()
         transactionStr="--transaction"
     fi
 
-    sqldiff $transactionStr "$localDb" "$tmpDb"
+    # RFM 2018-02-06 adding --primarykey to see if it gets rid of rowid from diff queries
+    #                I need rowid on my tables for the triggers, but I don't want them in the diff
+    sqldiff --primarykey $transactionStr "$localDb" "$tmpDb"
+    #sqldiff $transactionStr "$localDb" "$tmpDb"
 }
 
