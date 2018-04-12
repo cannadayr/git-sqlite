@@ -26,12 +26,13 @@ show_help_and_exit()
     local base="$(basename "$1")"
     echo "@PACKAGE_NAME@ - @summary@
 
-Usage: $base [OPTIONS] <COMMAND> DATABASE
+Usage: $BASE [OPTIONS] <COMMAND> DATABASE <SCHEMA>
 
 COMMAND - one of 'init' or 'attach'
     init - initialize the database
     attach - attach the config
 DATABASE - sqlite3 database
+SCHEMA - alternate schema. Only used during 'init'. Sourced from package_dir (typically /usr/local/share/git-sqlite)
 
 Options:
     -h        = This help screen.
@@ -69,6 +70,17 @@ init()
     local repo="$(pwd)"
     local db="$1"
 
+    schema=
+    if [ -n "$2" ]; then
+        if [ ! -f "$pkgdatadir/$2" ]; then
+            die "schema $2 doesn't exist"
+        else
+            schema="$2"
+        fi
+    else
+        schema="schema.sql"
+    fi
+
     prjCheck "$repo" "$db"
 
     # test that the db file doesn't exist
@@ -77,7 +89,7 @@ init()
         exit 1
     fi
 
-    sqlite3 "$repo/$db" < "$pkgdatadir/schema.sql"
+    sqlite3 "$db" < "$pkgdatadir/$schema"
 }
 
 attach()
@@ -148,10 +160,11 @@ test -z "$2" && die "missing database. See -h for help"
 # Set inputs
 cmd="$1"
 db="$2"
+schema="$3"
 
 # run the command
 case $cmd in
-    "init")   init "$db";;
+    "init")   init "$db" "$schema";;
     "attach") attach "$db";;
     *)      die "unknown command. See -h for help"
 esac
