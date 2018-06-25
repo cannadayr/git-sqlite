@@ -2,10 +2,8 @@
 git-sqlite is a collection of shell scripts that allows a sqlite database
 to be tracked using the git version control system.
 
-It can be used on an existing database, however a few modifications
-to the schema may be necessary:
-* add the 'without rowid' property to tables
-* use a uuid as the table's primary key
+It can be used on an existing database, however, UUIDs will make
+multi-master distribution substantially easier.
 
 See src/schema.sql after building the project for an example.
 
@@ -15,7 +13,7 @@ create a new database using the git-sqlite example schema:
 git-sqlite init newdatabase.db
 ```
 
-attach the database to your repository (has to be done for each repo):
+attach the database to your repository (has to be done once for each repo):
 ```
 git-sqlite attach newdatabase.db
 ```
@@ -36,14 +34,13 @@ Dependencies:
 * sqldiff
 * bash
 * git
+* autotools (build-essential debian repositories)
 
-sqldiff is included in the sqlite source code,
-it needs to be compiled from the sqlite source code,
-and installed in the user path.
+As of Debian Stretch (release 9), sqldiff is included with the default sqlite3 apt package.
 
-A basic example is below, see `INSTALLING SQLDIFF`
+If it is not available for your distribution, see `INSTALLING SQLDIFF` below.
 
-If you are installing from the git src, do the following:
+If you are installing from the git src:
 ```
 ./reconf
 ./configure
