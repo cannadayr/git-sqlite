@@ -88,8 +88,8 @@ fi
 
 # git seems to clean up the backup regardless,
 # but if its still here lets get rid of it
-if [ -e "$backup" ]; then
-    rm "$backup"
+if [ -e "$backupDb" ]; then
+    rm "$backupDb"
 fi
 
 # apply the diff
