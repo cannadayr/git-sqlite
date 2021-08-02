@@ -19,17 +19,25 @@ placeholder="$5"
 #printErr "marker=$marker"
 #printErr "placeholder=$placeholder"
 
+# create temporary files to store diffs in
+localDiffFile=$(mktemp)
+remoteDiffFile=$(mktemp)
+
 # get the diffs from the common ancestor to our states
-ancestor2localDiff="$(diffDb "$ancestor" "$localDb")"
-ancestor2remoteDiff="$(diffDb "$ancestor" "$remote")"
+diffDb "$ancestor" "$localDb" > "$localDiffFile"
+diffDb "$ancestor" "$remote" > "$remoteDiffFile"
 
 # backup the localDb before merging
 backupDb="${localDb}.bak"
 cp "$localDb" "$backupDb"
 
 # apply each diff to its counterpart
-sqlite3 "$localDb" "$ancestor2remoteDiff"
-sqlite3 "$remote" "$ancestor2localDiff"
+sqlite3 "$localDb" -init "$remoteDiffFile" ".exit"
+sqlite3 "$remote" -init "$localDiffFile" ".exit"
+
+# delete temporary files
+rm "$localDiffFile"
+rm "$remoteDiffFile"
 
 # diff our db's again
 local2remote="$(diffDb "$localDb" "$remote" "--no-transaction")"
